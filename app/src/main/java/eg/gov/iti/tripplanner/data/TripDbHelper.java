@@ -38,20 +38,22 @@ public class TripDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-
         db.execSQL("CREATE TABLE " + TABLE_NAME +
                 "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TRIP_NAME + " TEXT, " +
+                COLUMN_TRIP_STATUS + " INTEGER, " +
                 COLUMN_START_NAME + " TEXT, " +
+                COLUMN_START_LONG + " TEXT, " +
+                COLUMN_START_LAT + " TEXT, " +
                 COLUMN_END_NAME + " TEXT, " +
+                COLUMN_END_LONG + " TEXT, " +
+                COLUMN_END_LAT + " TEXT, " +
                 COLUMN_TRIP_NOTES + " TEXT, " +
                 COLUMN_TRIP_DATE + " TEXT, " +
                 COLUMN_TRIP_TIME + " TEXT" +
                 ")"
         );
-
     }
 
     @Override
