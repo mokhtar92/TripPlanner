@@ -1,5 +1,6 @@
 package eg.gov.iti.tripplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -70,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
         adapter=new TripAdapter(this,myList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Intent intent=new Intent(MainActivity.this,AddTrip.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
