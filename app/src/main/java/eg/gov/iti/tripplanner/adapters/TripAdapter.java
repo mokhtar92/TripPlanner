@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -49,8 +50,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     }
 
     @Override
-    public void onBindViewHolder(TripViewHolder holder, int position) {
-        Trip trip=myList.get(position);
+    public void onBindViewHolder(TripViewHolder holder, final int position) {
+        final Trip trip=myList.get(position);
         holder.tripName.setText(trip.getTripName());
         holder.tripTime.setText(trip.getTripTime());
         holder.tripDay.setText("friday");
@@ -58,7 +59,21 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.startName.setText(trip.getStartName());
         holder.endName.setText(trip.getEndName());
         holder.imageView.setImageResource(R.drawable.trip);
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(myContext, "item deleted on position "+position, Toast.LENGTH_SHORT).show();
+                removeItem(trip);
+            }
+        });
 
+
+    }
+
+    private void removeItem(Trip t) {
+        int itemPosition=myList.indexOf(t);
+        myList.remove(t);
+        notifyItemRemoved(itemPosition);
 
     }
 
