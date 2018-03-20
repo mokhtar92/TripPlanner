@@ -20,7 +20,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        layout="@layout/recycler_view"
+
+        tools:layout_editor_absoluteY="168dp" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
