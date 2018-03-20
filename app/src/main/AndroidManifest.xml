@@ -4,17 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- Mokhtar -->
 
+    <!-- Mokhtar -->
     <!-- Mokhtar END -->
     <!-- Ibrahim -->
-
     <!-- Ibrahim END -->
     <!-- Ahmed -->
-
     <!-- Ahmed END -->
     <!-- Shimaa -->
-
     <!-- Shimaa END -->
     <application
         android:allowBackup="true"
@@ -35,14 +32,19 @@
         </activity>
         <!-- Mokhtar -->
 
+
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
+
+        <activity android:name=".AddTrip"></activity>
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
 
+
         <!-- Ahmed END -->
         <!-- Shimaa -->
+
 
         <!-- Shimaa END -->
     </application>
