@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Mokhtar -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Mokhtar END -->
     <!-- Ibrahim -->
     <!-- Ibrahim END -->
@@ -31,7 +33,22 @@
             </intent-filter>
         </activity>
         <!-- Mokhtar -->
+        <receiver
+            android:name=".receivers.TripRescheduleReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <!-- For pre-Nougat devices -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <!-- For MIUI devices -->
+                <action android:name="android.intent.action.REBOOT" />
+            </intent-filter>
+        </receiver>
 
+        <activity android:name=".TripReminderActivity"></activity>
 
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
