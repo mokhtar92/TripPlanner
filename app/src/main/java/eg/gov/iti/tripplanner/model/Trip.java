@@ -1,12 +1,16 @@
 package eg.gov.iti.tripplanner.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by IbrahimDesouky on 3/18/2018.
  */
 
-public class Trip {
+public class Trip implements Parcelable {
 
     private String tripName;
     private int tripId;
@@ -125,4 +129,63 @@ public class Trip {
     public void setTripTime(String tripTime) {
         this.tripTime = tripTime;
     }
+
+    protected Trip(Parcel in) {
+        tripName = in.readString();
+        tripId = in.readInt();
+        tripStatus = in.readInt();
+        startName = in.readString();
+        startLong = in.readDouble();
+        startLat = in.readDouble();
+        endName = in.readString();
+        endLong = in.readDouble();
+        endLat = in.readDouble();
+        if (in.readByte() == 0x01) {
+            notes = new ArrayList<String>();
+            in.readList(notes, String.class.getClassLoader());
+        } else {
+            notes = null;
+        }
+        tripDate = in.readString();
+        tripTime = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(tripName);
+        dest.writeInt(tripId);
+        dest.writeInt(tripStatus);
+        dest.writeString(startName);
+        dest.writeDouble(startLong);
+        dest.writeDouble(startLat);
+        dest.writeString(endName);
+        dest.writeDouble(endLong);
+        dest.writeDouble(endLat);
+        if (notes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(notes);
+        }
+        dest.writeString(tripDate);
+        dest.writeString(tripTime);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Trip> CREATOR = new Parcelable.Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 }

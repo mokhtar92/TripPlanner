@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TripDbHelper extends SQLiteOpenHelper {
 
+    private static TripDbHelper sInstance;
+
     private static final String DATABASE_NAME = "trips.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -32,9 +34,17 @@ public class TripDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TRIP_TIME = "TRIP_TIME";
 
 
-    public TripDbHelper(Context context) {
+    public static synchronized TripDbHelper getsInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new TripDbHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    private TripDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
