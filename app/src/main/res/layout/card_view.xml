@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/cardBackGround">
+                android:background="@color/colorPrimaryLight">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -44,7 +44,7 @@
                     android:gravity="center_horizontal"
                     android:paddingTop="5dp"
                     android:text="Trip Name"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/primary_text"
                     android:textSize="30sp" />
 
                 <TextView
@@ -55,7 +55,7 @@
                     android:layout_marginStart="27dp"
                     android:layout_toEndOf="@+id/imageView"
                     android:text="TextView"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/primary_text"
                     android:textSize="25sp" />
 
                 <TextView
@@ -65,7 +65,7 @@
                     android:layout_alignStart="@+id/tripTime"
                     android:layout_centerVertical="true"
                     android:text="TextView"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/primary_text"
                     android:textSize="30sp" />
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:layout_alignBottom="@+id/tripName"
                     android:layout_alignStart="@+id/tripDay"
                     android:text="TextView"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/primary_text"
                     android:textSize="20sp" />
 
 
@@ -86,7 +86,7 @@
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:layout_marginBottom="5dp"
-                android:background="@color/cardLayout2Color">
+                android:background="@color/colorAccent">
 
                 <TextView
                     android:id="@+id/startName"
