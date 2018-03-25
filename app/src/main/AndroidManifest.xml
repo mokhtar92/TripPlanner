@@ -48,7 +48,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".TripReminderActivity"></activity>
+        <activity
+            android:name=".TripReminderActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.Translucent"></activity>
 
         <!-- Mokhtar END -->
         <!-- Ibrahim -->

@@ -35,8 +35,10 @@ public class TripReminderActivity extends AppCompatActivity {
             }
         });
 
-        turnOnScreen(this);
-        playSound(this, getAlarmUri());
+        if (mMediaPlayer == null) {
+            turnOnScreen(this);
+            playSound(this, getAlarmUri());
+        }
     }
 
 
@@ -79,5 +81,11 @@ public class TripReminderActivity extends AppCompatActivity {
             PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyCpuLock");
             wl_cpu.acquire(10000);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMediaPlayer.stop();
     }
 }
