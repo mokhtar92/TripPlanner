@@ -60,6 +60,9 @@
 
         <!-- Ahmed END -->
         <!-- Shimaa -->
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAquqgDyQnx2jO2Czz7x7a93Pb1MUxzs1o"/>
         <activity android:name=".New_Trip_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
