@@ -48,8 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="10"
-                    android:inputType="text"
-                    android:text="from" />
+                    android:hint="From"
+                    android:inputType="text" />
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -66,9 +66,10 @@
                     android:id="@+id/tripTo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:completionHint="To"
                     android:ems="10"
-                    android:inputType="text"
-                    android:text="to" />
+                    android:hint="To"
+                    android:inputType="text" />
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
