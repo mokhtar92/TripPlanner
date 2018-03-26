@@ -24,11 +24,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!-- Mokhtar -->
 
@@ -36,7 +32,7 @@
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
 
-        <activity android:name=".AddTrip"></activity>
+        <activity android:name=".AddTrip" />
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
@@ -44,9 +40,16 @@
 
         <!-- Ahmed END -->
         <!-- Shimaa -->
+        <activity android:name=".New_Trip_Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Shimaa END -->
+
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@
 
     <!-- Ahmed END -->
     <!-- Shimaa -->
-
+    <string name="trip_name">Trip Name</string>
+    <string name="saveTrip">Save Trip</string>
     <!-- Shimaa END -->
 </resources>
