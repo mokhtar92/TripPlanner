@@ -1,8 +1,10 @@
 package eg.gov.iti.tripplanner;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Places;
@@ -49,7 +52,13 @@ public class New_Trip_Activity extends AppCompatActivity {
         ///// create auto complete Adapter
         LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
         GeoDataClient geoDataClient= Places.getGeoDataClient(this,null);
-
+        // check network connection
+        if (isNetworkConnected() ) {
+            Toast.makeText(this,"connected",Toast.LENGTH_SHORT).show();
+        }else
+        {
+            Toast.makeText(this,"please check your network connection",Toast.LENGTH_SHORT).show();
+        }
         PlaceAutocompleteAdapter placeAutocompleteAdapter=new PlaceAutocompleteAdapter(this,geoDataClient,Lat_Lang_bounds,null);
         tripFrom.setAdapter(placeAutocompleteAdapter);
         tripTo.setAdapter(placeAutocompleteAdapter);
@@ -99,5 +108,12 @@ public class New_Trip_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         return location;
+    }
+
+    //////////////network connection func
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 }
