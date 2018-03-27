@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "eg.gov.iti.tripplanner"
-        minSdkVersion 17
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,8 @@ dependencies {
 
     //<!-- Ahmed END -->
     //<!-- Shimaa -->
-
+    compile 'com.google.android.gms:play-services-auth:11.8.0'
+    compile 'com.google.android.gms:play-services-places:11.8.0'
     //<!-- Shimaa END -->
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
 }
