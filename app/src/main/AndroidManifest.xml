@@ -58,7 +58,7 @@
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
 
-        <activity android:name=".AddTrip" />
+        <activity android:name=".TripDetailsActivity" />
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->

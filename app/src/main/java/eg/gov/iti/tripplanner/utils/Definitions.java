@@ -10,4 +10,7 @@ public class Definitions {
     public static final int STATUS_DONE = 1;
     public static final int STATUS_UPCOMING = 2;
 
+    public static final int ONE_WAY_TRIP = 11;
+    public static final int ROUND_TRIP = 22;
+
 }

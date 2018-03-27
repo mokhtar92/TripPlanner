@@ -3,7 +3,6 @@ package eg.gov.iti.tripplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Intent intent = new Intent(MainActivity.this, AddTrip.class);
+                Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
                 intent.putExtra("trip", myList.get(position));
                 startActivity(intent);
             }

@@ -20,6 +20,8 @@ public class TripDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_ID";
     public static final String COLUMN_TRIP_NAME = "TRIP_NAME";
     public static final String COLUMN_TRIP_STATUS = "TRIP_STATUS";
+    public static final String COLUMN_TRIP_TYPE = "TRIP_TYPE";
+
 
     public static final String COLUMN_START_NAME = "START_NAME";
     public static final String COLUMN_START_LONG = "START_LONG";
@@ -53,6 +55,7 @@ public class TripDbHelper extends SQLiteOpenHelper {
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TRIP_NAME + " TEXT, " +
                 COLUMN_TRIP_STATUS + " INTEGER, " +
+                COLUMN_TRIP_TYPE + " INTEGER, " +
                 COLUMN_START_NAME + " TEXT, " +
                 COLUMN_START_LONG + " TEXT, " +
                 COLUMN_START_LAT + " TEXT, " +
