@@ -44,38 +44,38 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Trip trip=new Trip();
+        Trip trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
-        trip=new Trip();
+        trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
-        trip=new Trip();
+        trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
 
-        adapter=new TripAdapter(this,myList);
+        adapter = new TripAdapter(this, myList);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Intent intent=new Intent(MainActivity.this,AddTrip.class);
-                intent.putExtra("trip",myList.get(position));
+                Intent intent = new Intent(MainActivity.this, AddTrip.class);
+                intent.putExtra("trip", myList.get(position));
                 startActivity(intent);
             }
         });
