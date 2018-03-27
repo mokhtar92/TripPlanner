@@ -26,11 +26,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!-- Mokhtar -->
         <receiver
@@ -56,7 +52,7 @@
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
 
-        <activity android:name=".AddTrip"></activity>
+        <activity android:name=".AddTrip" />
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
@@ -65,8 +61,18 @@
         <!-- Ahmed END -->
         <!-- Shimaa -->
 
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAquqgDyQnx2jO2Czz7x7a93Pb1MUxzs1o"/>
+        <activity android:name=".New_Trip_Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Shimaa END -->
+
     </application>
 
 </manifest>
