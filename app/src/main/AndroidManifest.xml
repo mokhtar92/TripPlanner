@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- Mokhtar END -->
     <!-- Ibrahim -->
     <!-- Ibrahim END -->
@@ -53,7 +54,9 @@
         <activity
             android:name=".TripReminderActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Translucent"></activity>
+            android:theme="@style/Theme.AppCompat.Translucent" />
+
+        <activity android:name=".LoginActivity"></activity>
 
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
@@ -70,9 +73,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAquqgDyQnx2jO2Czz7x7a93Pb1MUxzs1o" />
-        <activity android:name=".New_Trip_Activity">
 
-        </activity>
+        <activity android:name=".New_Trip_Activity" />
 
         <!-- Shimaa END -->
 
