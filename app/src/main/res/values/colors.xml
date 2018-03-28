@@ -18,7 +18,8 @@
     <color name="colorPrimary">#2c3e54</color>
     <color name="colorPrimaryDark">#02182b</color>
     <color name="colorPrimaryLight">#576881</color>
-    <color name="colorAccent">#009a9a</color>
+    <color name="colorAccent">#2c3e54</color>
+    <color name="colorAccent2">#009a9a</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
