@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ import eg.gov.iti.tripplanner.R;
  */
 public class SignUpFragment extends Fragment {
 
-    private EditText inputEmail, inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
+    private EditText inputEmail, inputPassword,confirmPassword;
+    private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private SignInButton googlebtn;
@@ -110,12 +111,69 @@ public class SignUpFragment extends Fragment {
         //auth = FirebaseAuth.getInstance();
         inputEmail = (EditText) view.findViewById(R.id.sign_up_email);
         inputPassword = (EditText) view.findViewById(R.id.sign_up_password);
+        confirmPassword=view.findViewById(R.id.sign_up_confirm_password);
+        btnSignUp=view.findViewById(R.id.sign_up_button);
 
         googlebtn=view.findViewById(R.id.googlebtn);
         googlebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
+            }
+        });
+
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
+                String conFirmPass=confirmPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+
+                    Toast.makeText(getContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.length() < 6) {
+                    Toast.makeText(getContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!password.equals(conFirmPass)){
+                    Toast.makeText(getContext(), "Password donot match", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                //create user
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(getActivity(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+
+// If sign in fails, display a message to the user. If sign in succeeds
+// the auth state listener will be notified and logic to handle the
+// signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Authentication failed." + task.getException(),
+                                            Toast.LENGTH_LONG).show();
+                                } else
+
+                                {
+                                    String user_id=auth.getCurrentUser().getUid();
+
+
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    intent.putExtra("userId",user_id);
+                                    startActivity(intent);
+                                    getActivity().finish();
+
+                                }
+                            }
+                        });
             }
         });
 
