@@ -19,5 +19,6 @@
     <!-- Shimaa -->
     <string name="trip_name">Trip Name</string>
     <string name="saveTrip">Save Trip</string>
+    <string name="title_activity_maps">DisplayRoutes</string>
     <!-- Shimaa END -->
 </resources>
