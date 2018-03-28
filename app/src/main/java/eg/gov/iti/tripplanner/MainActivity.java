@@ -3,7 +3,6 @@ package eg.gov.iti.tripplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mo5tar = new Intent(MainActivity.this, TripReminderActivity.class);
-                startActivity(mo5tar);
+                Intent addNewTripActivity = new Intent(MainActivity.this, New_Trip_Activity.class);
+                startActivity(addNewTripActivity);
             }
         });
 
@@ -44,38 +43,38 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Trip trip=new Trip();
+        Trip trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
-        trip=new Trip();
+        trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
-        trip=new Trip();
+        trip = new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45");
+        trip.setTripTime("10:45 am");
         myList.add(trip);
 
 
-        adapter=new TripAdapter(this,myList);
+        adapter = new TripAdapter(this, myList);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Intent intent=new Intent(MainActivity.this,AddTrip.class);
-                intent.putExtra("trip",myList.get(position));
+                Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
+                intent.putExtra("trip", myList.get(position));
                 startActivity(intent);
             }
         });
@@ -98,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sync) {
+            Intent startLoginActivity = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(startLoginActivity);
             return true;
         }
 

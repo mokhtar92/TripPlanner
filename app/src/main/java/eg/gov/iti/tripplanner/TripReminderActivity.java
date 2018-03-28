@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class TripReminderActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_trip_reminder);
 
-        ImageView stopAlarmImageView = findViewById(R.id.cancel_image_view);
+        ImageView stopAlarmImageView = findViewById(R.id.reminder_cancel_image_view);
         stopAlarmImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

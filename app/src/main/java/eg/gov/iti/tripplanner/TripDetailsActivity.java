@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import eg.gov.iti.tripplanner.model.Trip;
 
-public class AddTrip extends AppCompatActivity {
+public class TripDetailsActivity extends AppCompatActivity {
     Intent intent;
     TextView tripName;
     TextView tripDate;

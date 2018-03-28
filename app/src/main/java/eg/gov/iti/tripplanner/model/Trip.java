@@ -15,6 +15,7 @@ public class Trip implements Parcelable {
     private String tripName;
     private int tripId;
     private int tripStatus;
+    private int tripType;
 
     private String startName;
     private double startLong;
@@ -32,7 +33,6 @@ public class Trip implements Parcelable {
 
     public Trip() {
     }
-
 
     public String getTripName() {
         return tripName;
@@ -56,6 +56,14 @@ public class Trip implements Parcelable {
 
     public void setTripStatus(int tripStatus) {
         this.tripStatus = tripStatus;
+    }
+
+    public int getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(int tripType) {
+        this.tripType = tripType;
     }
 
     public String getStartName() {
@@ -106,8 +114,13 @@ public class Trip implements Parcelable {
         this.endLat = endLat;
     }
 
-    public List<String> getNotes() {
-        return notes;
+    public String getNotes() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < notes.size(); i++) {
+            builder.append(notes.get(i).concat(","));
+        }
+
+        return builder.toString();
     }
 
     public void setNotes(List<String> notes) {
@@ -130,10 +143,12 @@ public class Trip implements Parcelable {
         this.tripTime = tripTime;
     }
 
+
     protected Trip(Parcel in) {
         tripName = in.readString();
         tripId = in.readInt();
         tripStatus = in.readInt();
+        tripType = in.readInt();
         startName = in.readString();
         startLong = in.readDouble();
         startLat = in.readDouble();
@@ -160,6 +175,7 @@ public class Trip implements Parcelable {
         dest.writeString(tripName);
         dest.writeInt(tripId);
         dest.writeInt(tripStatus);
+        dest.writeInt(tripType);
         dest.writeString(startName);
         dest.writeDouble(startLong);
         dest.writeDouble(startLat);
