@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -33,8 +35,8 @@ import eg.gov.iti.tripplanner.model.Trip;
 
 public class New_Trip_Activity extends AppCompatActivity {
     Button saveButton;
-    AutoCompleteTextView tripFrom,tripTo;
-    EditText tripName,tripNotes;
+    AutoCompleteTextView tripFrom, tripTo;
+    EditText tripName, tripNotes;
     DatePicker datePicker;
     TimePicker timePicker;
 
@@ -42,24 +44,24 @@ public class New_Trip_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new__trip_);
-        saveButton=findViewById(R.id.saveTripButton);
-        tripName=findViewById(R.id.tripName);
-        tripFrom=findViewById(R.id.tripFrom);
-        tripTo=findViewById(R.id.tripTo);
-        tripNotes=findViewById(R.id.notes);
-        datePicker=findViewById(R.id.datePicker);
-        timePicker=findViewById(R.id.timePicker);
-        ///// create auto complete Adapter
-        LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40,-168),new LatLng(71,136));
-        GeoDataClient geoDataClient= Places.getGeoDataClient(this,null);
-        // check network connection
-        if (isNetworkConnected() ) {
-            Toast.makeText(this,"connected",Toast.LENGTH_SHORT).show();
-        }else
-        {
-            Toast.makeText(this,"please check your network connection",Toast.LENGTH_SHORT).show();
-        }
-        PlaceAutocompleteAdapter placeAutocompleteAdapter=new PlaceAutocompleteAdapter(this,geoDataClient,Lat_Lang_bounds,null);
+        saveButton = findViewById(R.id.saveTripButton);
+        tripName = findViewById(R.id.tripName);
+        tripFrom = findViewById(R.id.tripFrom);
+        tripTo = findViewById(R.id.tripTo);
+        tripNotes = findViewById(R.id.notes);
+        datePicker = findViewById(R.id.datePicker);
+        timePicker = findViewById(R.id.timePicker);
+
+        // create auto complete Adapter
+        LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
+        GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
+//        // check network connection
+//        if (isNetworkConnected()) {
+//            Toast.makeText(this, "connected", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "please check your network connection", Toast.LENGTH_SHORT).show();
+//        }
+        PlaceAutocompleteAdapter placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Lat_Lang_bounds, null);
         tripFrom.setAdapter(placeAutocompleteAdapter);
         tripTo.setAdapter(placeAutocompleteAdapter);
 
@@ -69,51 +71,91 @@ public class New_Trip_Activity extends AppCompatActivity {
                 String TName = tripName.getText().toString();
                 String TFrom = tripFrom.getText().toString();
                 String TTo = tripTo.getText().toString();
-                String TNotes= tripNotes.getText().toString();
-                Trip trip=new Trip();
-                List noteList=new ArrayList();
-                noteList.add(TNotes);
-                Calendar calendar = new GregorianCalendar(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth(),timePicker.getCurrentHour(),timePicker.getCurrentMinute());
-                Long unixTime=calendar.getTimeInMillis();
-                ///// get lat and long
-                Address fromAddress= getLat_Lang(TFrom);
+//                String TNotes = tripNotes.getText().toString();
+                Trip trip = new Trip();
+                List noteList = new ArrayList();
+//                noteList.add(TNotes);
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                Long unixTime = calendar.getTimeInMillis() / 1000;
+                /// get lat and long
+                Address fromAddress = getLat_Lang(TFrom);
                 trip.setStartLong(fromAddress.getLongitude());
                 trip.setStartLat(fromAddress.getLatitude());
-                Address toAddress= getLat_Lang(TTo);
+                Address toAddress = getLat_Lang(TTo);
                 trip.setEndLong(toAddress.getLongitude());
                 trip.setEndLat(toAddress.getLatitude());
                 trip.setTripName(TName);
                 trip.setStartName(TFrom);
                 trip.setEndName(TTo);
-                trip.setNotes(noteList);
-                System.out.println(trip);
+//                trip.setNotes(noteList);
+                if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
+                    Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
 
+                } else {
+                    Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
     }
-    protected Address getLat_Lang (String place){
+
+    protected Address getLat_Lang(String place) {
         Geocoder coder = new Geocoder(New_Trip_Activity.this);
         List<Address> address;
-        Address location=null;
+        Address location = null;
 
         try {
-            address = coder.getFromLocationName(place,5);
+            address = coder.getFromLocationName(place, 5);
 
-            if (address==null) {
+            if (address == null) {
 
             }
-            location=address.get(0);
+            location = address.get(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return location;
     }
 
-    //////////////network connection func
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                //save action
+                return true;
+
+            case R.id.action_cancel:
+                //cancel action
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //network connection func
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
     }
+
+    //get only first name of location
+    private String getShortAddress(String detailedAddress) {
+
+        if (detailedAddress.contains(",")) {
+            String[] splitAddress = detailedAddress.split(",");
+            return splitAddress[0];
+
+        } else {
+            return detailedAddress;
+        }
+    }
 }
+

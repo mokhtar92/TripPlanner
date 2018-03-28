@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mo5tar = new Intent(MainActivity.this, TripReminderActivity.class);
-                startActivity(mo5tar);
+                Intent addNewTripActivity = new Intent(MainActivity.this, New_Trip_Activity.class);
+                startActivity(addNewTripActivity);
             }
         });
 
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sync) {
             return true;
         }
 
