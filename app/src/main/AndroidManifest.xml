@@ -61,7 +61,14 @@
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
 
-        <activity android:name=".TripDetailsActivity" />
+        <activity
+            android:name=".TripDetailsActivity"
+            android:parentActivityName=".MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
@@ -74,7 +81,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAquqgDyQnx2jO2Czz7x7a93Pb1MUxzs1o" />
 
-        <activity android:name=".New_Trip_Activity" />
+        <activity
+            android:name=".New_Trip_Activity"
+            android:parentActivityName=".MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />>
+        </activity>
 
         <!-- Shimaa END -->
 

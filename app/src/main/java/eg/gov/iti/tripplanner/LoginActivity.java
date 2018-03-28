@@ -12,7 +12,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_sign_up);
 
         ViewPager viewPager = findViewById(R.id.viewpager);
 
