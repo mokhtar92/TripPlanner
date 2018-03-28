@@ -30,6 +30,12 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <!-- Mokhtar -->
         <receiver
@@ -51,15 +57,7 @@
             android:name=".TripReminderActivity"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Translucent" />
-
-        <activity android:name=".LoginActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LoginActivity" />
 
         <!-- Mokhtar END -->
         <!-- Ibrahim -->
@@ -67,6 +65,7 @@
         <activity
             android:name=".TripDetailsActivity"
             android:parentActivityName=".MainActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -75,7 +74,18 @@
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
+        <activity android:name=".Past_Trips_Activity">
 
+        </activity>
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Ahmed END -->
         <!-- Shimaa -->
@@ -87,13 +97,17 @@
         <activity
             android:name=".New_Trip_Activity"
             android:parentActivityName=".MainActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />>
+                android:value=".MainActivity" />
+            >
         </activity>
 
         <!-- Shimaa END -->
+
+
 
     </application>
 
