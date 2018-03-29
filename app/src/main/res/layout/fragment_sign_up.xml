@@ -137,10 +137,10 @@
             android:textColor="#d9e5f3"
             android:textStyle="bold" />
 
-        <com.google.android.gms.common.SignInButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/googlebtn"></com.google.android.gms.common.SignInButton>
+        <!--<com.google.android.gms.common.SignInButton-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/googlebtn"></com.google.android.gms.common.SignInButton>-->
 
     </LinearLayout>
 

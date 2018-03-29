@@ -43,12 +43,7 @@ public class SignUpFragment extends Fragment {
 
     private EditText inputEmail, inputPassword,confirmPassword;
     private Button btnSignIn, btnSignUp;
-    private ProgressBar progressBar;
     private FirebaseAuth auth;
-    private SignInButton googlebtn;
-    private GoogleSignInOptions gso;
-    private static final int RC_SIGN_IN = 2;
-    private GoogleApiClient mGoogleSignInClient;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
@@ -85,42 +80,42 @@ public class SignUpFragment extends Fragment {
             getActivity().finish();
         }
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = new GoogleApiClient.Builder(getActivity()).
-                enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getActivity(), connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
-
-        mAuthStateListener=new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null){
-
-
-                }
-
-            }
-        };
+//        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//        mGoogleSignInClient = new GoogleApiClient.Builder(getActivity()).
+//                enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener() {
+//                    @Override
+//                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+//                        Toast.makeText(getActivity(), connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+//
+//        mAuthStateListener=new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if(firebaseAuth.getCurrentUser()!=null){
+//
+//
+//                }
+//
+//            }
+//        };
         //auth = FirebaseAuth.getInstance();
         inputEmail = (EditText) view.findViewById(R.id.sign_up_email);
         inputPassword = (EditText) view.findViewById(R.id.sign_up_password);
         confirmPassword=view.findViewById(R.id.sign_up_confirm_password);
         btnSignUp=view.findViewById(R.id.sign_up_button);
 
-        googlebtn=view.findViewById(R.id.googlebtn);
-        googlebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+//        googlebtn=view.findViewById(R.id.googlebtn);
+//        googlebtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                signIn();
+//            }
+//        });
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -181,73 +176,73 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-
-
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            GoogleSignInResult result=Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-            if (result.isSuccess()){
-
-                GoogleSignInAccount account=result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            }else {
-
-                Toast.makeText(getActivity(), "errrrrrrrr", Toast.LENGTH_SHORT).show();
-            }
-
+//    private void signIn() {
+//        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
+//
+//
+//        startActivityForResult(signInIntent, RC_SIGN_IN);
+//    }
+//
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+//        if (requestCode == RC_SIGN_IN) {
 //            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try {
-//                // Google Sign In was successful, authenticate with Firebase
-//                GoogleSignInAccount account = task.getResult(ApiException.class);
+//            GoogleSignInResult result=Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//
+//            if (result.isSuccess()){
+//
+//                GoogleSignInAccount account=result.getSignInAccount();
 //                firebaseAuthWithGoogle(account);
-//            } catch (ApiException e) {
-//                // Google Sign In failed, update UI appropriately
-//                Toast.makeText(this,"error here", Toast.LENGTH_SHORT).show(); // ...
-//                 }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(getActivity(), "trueeeeeeeee", Toast.LENGTH_SHORT).show();
-                            String userId=user.getUid();
-                            Intent intent=new Intent(getActivity(), MainActivity.class);
-                            intent.putExtra("userId",userId);
-                            startActivity(intent);
-
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-
-                            Log.w("tag", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            //updateUI(null);
-                        }
-                        // ...
-                    }
-                });
-    }
+//            }else {
+//
+//                Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//
+////            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+////            try {
+////                // Google Sign In was successful, authenticate with Firebase
+////                GoogleSignInAccount account = task.getResult(ApiException.class);
+////                firebaseAuthWithGoogle(account);
+////            } catch (ApiException e) {
+////                // Google Sign In failed, update UI appropriately
+////                Toast.makeText(this,"error here", Toast.LENGTH_SHORT).show(); // ...
+////                 }
+//        }
+//    }
+//
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+//
+//        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+//        auth.signInWithCredential(credential)
+//                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d("TAG", "signInWithCredential:success");
+//                            FirebaseUser user = auth.getCurrentUser();
+//                            Toast.makeText(getActivity(), "trueeeeeeeee", Toast.LENGTH_SHORT).show();
+//                            String userId=user.getUid();
+//                            Intent intent=new Intent(getActivity(), MainActivity.class);
+//                            intent.putExtra("userId",userId);
+//                            startActivity(intent);
+//
+//                            //updateUI(user);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//
+//                            Log.w("tag", "signInWithCredential:failure", task.getException());
+//                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+//                            //updateUI(null);
+//                        }
+//                        // ...
+//                    }
+//                });
+//    }
 
 }

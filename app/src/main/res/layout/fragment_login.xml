@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="25dp"
             android:background="#009a9a"
             android:gravity="center"
             android:letterSpacing="0.2"
@@ -103,6 +103,12 @@
             android:text="Login"
             android:textColor="#d9e5f3"
             android:textStyle="bold" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/googlebtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"></com.google.android.gms.common.SignInButton>
     </LinearLayout>
 
     <LinearLayout
