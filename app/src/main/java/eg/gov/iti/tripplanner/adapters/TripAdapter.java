@@ -1,6 +1,8 @@
 package eg.gov.iti.tripplanner.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 removeItem(trip);
             }
         });
+        holder.startTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+myList.get(position).getEndLat()+","+myList.get(position).getEndLong());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                myContext.startActivity(mapIntent);
+
+            }
+        });
     }
 
     private void removeItem(Trip t) {
@@ -85,6 +98,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         RelativeLayout startTrip;
         ImageView tripImageView, editTrip, deleteTrip;
         TextView tripName, tripTime, tripDate, startName, endName;
+
 
         public TripViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);

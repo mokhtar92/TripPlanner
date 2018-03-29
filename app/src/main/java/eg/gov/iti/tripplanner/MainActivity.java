@@ -43,28 +43,41 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Trip trip = new Trip();
+        Trip trip=new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
+        trip.setTripTime("10:45");
+        trip.setEndLat(30.067401);
+        trip.setEndLong(31.026179);
+        ArrayList<String>notes=new ArrayList<String>();
+        notes.add("note1");
+        trip.setNotes(notes);
         myList.add(trip);
 
-        trip = new Trip();
+        trip=new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
+        trip.setTripTime("10:45");
+        trip.setEndLat(30.067401);
+        trip.setEndLong(-31.026179);
+
+        trip.setNotes(notes);
+
         myList.add(trip);
 
-        trip = new Trip();
+        trip=new Trip();
         trip.setEndName("smartVillage");
         trip.setTripName("Gahim fel ITI");
         trip.setStartName("Giza");
         trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
+        trip.setTripTime("10:45");
+        trip.setEndLat(30.067401);
+        trip.setEndLong(-31.026179);
+        trip.setNotes(notes);
         myList.add(trip);
 
 
