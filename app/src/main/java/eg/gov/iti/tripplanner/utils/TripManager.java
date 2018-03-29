@@ -16,35 +16,37 @@ import eg.gov.iti.tripplanner.TripReminderActivity;
 
 public class TripManager {
 
-    public static void scheduleNewTrip(Context context, int tripId, int tripTimeInSeconds) {
+    public static void scheduleNewTrip(Context context, int tripId, Intent intent, int tripTimeInSeconds) {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, tripTimeInSeconds);
 
-        Intent intent = new Intent(context, TripReminderActivity.class);
-
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager manager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
 
-    public static void cancelScheduledTrip(Context context, int tripId) {
+    public static void cancelScheduledTrip(Context context, int tripId, Intent intent) {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, 12);
 
-        Intent intent = new Intent(context, TripReminderActivity.class);
-
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager manager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
         manager.cancel(pendingIntent);
         pendingIntent.cancel();
+    }
+
+
+    public static void re_scheduleTrip(Context context, int tripId, Intent intent, int tripTimeInSeconds) {
+        cancelScheduledTrip(context, tripId, intent);
+        scheduleNewTrip(context, tripId, intent, tripTimeInSeconds);
     }
 }
