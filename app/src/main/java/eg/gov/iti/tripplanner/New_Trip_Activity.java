@@ -23,6 +23,10 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +43,12 @@ public class New_Trip_Activity extends AppCompatActivity {
     EditText tripName, tripNotes;
     DatePicker datePicker;
     TimePicker timePicker;
+    private DatabaseReference myRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userId;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,12 @@ public class New_Trip_Activity extends AppCompatActivity {
         datePicker = findViewById(R.id.datePicker);
         timePicker = findViewById(R.id.timePicker);
 
+        mAuth= FirebaseAuth.getInstance();
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        myRef=mFirebaseDatabase.getReference();
+        user=mAuth.getCurrentUser();
+        userId=user.getUid();
+        Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
         // create auto complete Adapter
         LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
         GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
@@ -78,22 +94,35 @@ public class New_Trip_Activity extends AppCompatActivity {
                 Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 Long unixTime = calendar.getTimeInMillis() / 1000;
                 /// get lat and long
-                Address fromAddress = getLat_Lang(TFrom);
-                trip.setStartLong(fromAddress.getLongitude());
-                trip.setStartLat(fromAddress.getLatitude());
-                Address toAddress = getLat_Lang(TTo);
-                trip.setEndLong(toAddress.getLongitude());
-                trip.setEndLat(toAddress.getLatitude());
+               // Address fromAddress = getLat_Lang(TFrom);
+                //trip.setStartLong(fromAddress.getLongitude());
+                trip.setStartLong(30.067401);
+                //trip.setStartLat(fromAddress.getLatitude());
+                trip.setStartLat(30.067401);
+                //Address toAddress = getLat_Lang(TTo);
+                //trip.setEndLong(toAddress.getLongitude());
+                //trip.setEndLat(toAddress.getLatitude());
+
+                trip.setEndLat(30.067401);
+                trip.setEndLong(31.026179);
                 trip.setTripName(TName);
                 trip.setStartName(TFrom);
                 trip.setEndName(TTo);
-//                trip.setNotes(noteList);
+                trip.setNotes(noteList);
                 if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
                     Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+                    return;
 
                 } else {
                     Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
                 }
+
+                String tripId=myRef.push().getKey();
+                trip.setFireBaseTripId(tripId);
+                String userId2=new String(userId);
+                myRef.child("users").child(userId2).child(tripId).setValue(trip);
+
+
             }
 
         });

@@ -17,6 +17,16 @@ public class Trip implements Parcelable {
     private int tripStatus;
     private int tripType;
 
+    private String fireBaseTripId;
+
+    public String getFireBaseTripId() {
+        return fireBaseTripId;
+    }
+
+    public void setFireBaseTripId(String fireBaseTripId) {
+        this.fireBaseTripId = fireBaseTripId;
+    }
+
     private String startName;
     private double startLong;
     private double startLat;
