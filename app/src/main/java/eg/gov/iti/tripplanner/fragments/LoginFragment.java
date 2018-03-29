@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -27,7 +31,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 
+import eg.gov.iti.tripplanner.LoginActivity;
 import eg.gov.iti.tripplanner.MainActivity;
 import eg.gov.iti.tripplanner.R;
 
@@ -43,6 +49,11 @@ public class LoginFragment extends Fragment {
     private GoogleApiClient mGoogleSignInClient;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private EditText inputEmail, inputPassword;
+    private ProgressBar progressBar;
+    private Button btnSignup, btnLogin, btnReset;
+    DatabaseReference userId;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -51,8 +62,6 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
-
-
 
     }
 
@@ -65,6 +74,13 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view=inflater.inflate(R.layout.fragment_login, container, false);
+        inputEmail = (EditText) view.findViewById(R.id.login_email);
+        inputPassword = (EditText) view.findViewById(R.id.login_password);
+
+
+        btnLogin = (Button) view.findViewById(R.id.login_button);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
 
 
 
@@ -108,6 +124,50 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 signIn();
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = inputEmail.getText().toString();
+                final String password = inputPassword.getText().toString();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
+//authenticate user
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+// If sign in fails, display a message to the user. If sign in succeeds
+// the auth state listener will be notified and logic to handle the
+// signed in user can be handled in the listener.
+                                progressBar.setVisibility(View.GONE);
+                                if (!task.isSuccessful()) {
+// there was an error
+                                    if (password.length() < 6) {
+                                        inputPassword.setError(getString(R.string.minimum_password));
+                                    } else {
+                                        Toast.makeText(getActivity(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    String user_id=auth.getCurrentUser().getUid();
+
+
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    intent.putExtra("userId",user_id);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            }
+                        });
             }
         });
         return view;
