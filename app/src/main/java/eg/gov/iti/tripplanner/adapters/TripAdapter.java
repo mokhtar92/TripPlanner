@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import eg.gov.iti.tripplanner.R;
@@ -26,6 +31,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private ArrayList<Trip> myList;
     private OnItemClickListener myListener;
 
+    private DatabaseReference myRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userId;
+    private FirebaseUser user;
+
+
+
     public interface OnItemClickListener {
         void onItemClicked(int position);
     }
@@ -37,6 +51,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public TripAdapter(Context myContext, ArrayList<Trip> myList) {
         this.myContext = myContext;
         this.myList = myList;
+        mAuth= FirebaseAuth.getInstance();
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        myRef=mFirebaseDatabase.getReference();
+        user=mAuth.getCurrentUser();
+        userId=user.getUid();
     }
 
     @Override
@@ -66,6 +85,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             @Override
             public void onClick(View v) {
                 removeItem(trip);
+
+
+
+                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
             }
         });
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
