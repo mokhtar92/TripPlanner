@@ -28,5 +28,7 @@
     <string name="str_trip_time">Trip Time</string>
     <string name="str_notes">Notes</string>
     <string name="str_trip_type">Trip Type</string>
+    <string name="str_trip_notes">Trip Notes</string>
+    <string name="str_add_note">Add Note</string>
     <!-- Shimaa END -->
 </resources>

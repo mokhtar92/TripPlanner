@@ -20,19 +20,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import eg.gov.iti.tripplanner.adapters.NoteAdapter;
+import eg.gov.iti.tripplanner.adapters.ReminderNoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 
 public class TripReminderActivity extends AppCompatActivity {
@@ -68,13 +64,13 @@ public class TripReminderActivity extends AppCompatActivity {
                 tripDate.setText(trip.getTripDate());
 
                 ListView notesListView = findViewById(R.id.notes_list_view);
-                NoteAdapter adapter = new NoteAdapter(getApplicationContext(), trip.getNotes());
+                ReminderNoteAdapter adapter = new ReminderNoteAdapter(getApplicationContext(), trip.getNotes());
                 notesListView.setAdapter(adapter);
 
                 notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        CheckBox checkBox = view.findViewById(R.id.note_check_box);
+                        CheckBox checkBox = view.findViewById(R.id.reminder_note_check_box);
                         if (!checkBox.isChecked()) {
                             checkBox.setChecked(true);
                         } else {
