@@ -163,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
-            Intent startLoginActivity = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(startLoginActivity);
+            Intent startDetailsActivity = new Intent(MainActivity.this, TripDetailsActivity.class);
+            startActivity(startDetailsActivity);
             return true;
         }
 

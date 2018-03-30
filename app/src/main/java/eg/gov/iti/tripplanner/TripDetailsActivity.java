@@ -15,16 +15,14 @@ public class TripDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
-        tripDate=findViewById(R.id.add_trip_time);
-        tripName=findViewById(R.id.add_trip_name);
-        intent=getIntent();
-        if (intent!=null){
+        setContentView(R.layout.activity_trip_details);
 
-            Trip trip=intent.getParcelableExtra("trip");
-            tripName.setText(trip.getTripName());
-            tripDate.setText(trip.getTripDate());
+        intent = getIntent();
+        if (intent != null) {
+            Trip trip = intent.getParcelableExtra("trip");
+            if (trip != null) {
 
+            }
         }
 
     }
