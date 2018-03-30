@@ -103,7 +103,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:fontFamily="cursive"
-            android:text="Start Now"
+            android:text="@string/str_reminder_start_trip"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold" />

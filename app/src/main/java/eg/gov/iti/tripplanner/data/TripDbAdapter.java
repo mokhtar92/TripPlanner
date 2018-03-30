@@ -117,7 +117,7 @@ public class TripDbAdapter {
     public List<Trip> getAllTrips() {
         List<Trip> allTrips = new ArrayList<>();
 
-        String selectQuery = "SELECT * FROM " + TripDbHelper.TABLE_NAME + " ORDER BY " + TripDbHelper.COLUMN_TRIP_DATE + ", " + TripDbHelper.COLUMN_TRIP_TIME;
+        String selectQuery = "SELECT * FROM " + TripDbHelper.TABLE_NAME + " ORDER BY " + TripDbHelper.COLUMN_TRIP_TIME + " DESC";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

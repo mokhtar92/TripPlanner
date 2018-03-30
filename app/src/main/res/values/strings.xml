@@ -12,6 +12,7 @@
     <string name="str_sign_up">Sign up</string>
     <string name="str_radio_btn_single_trip">Single Trip</string>
     <string name="str_radio_btn_round_trip">Round Trip</string>
+    <string name="str_reminder_start_trip">Start Trip</string>
     <!-- Mokhtar END -->
     <!-- Ibrahim -->
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>

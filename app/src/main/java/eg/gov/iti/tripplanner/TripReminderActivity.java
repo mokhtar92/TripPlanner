@@ -74,8 +74,7 @@ public class TripReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (trip != null) {
-//                    showNotification(getApplicationContext(), trip.getTripId(), trip.getTripName(), trip.getTripTime());
-                    show2(getApplicationContext());
+                    showNotification(getApplicationContext(), trip.getTripId(), trip.getTripName(), trip.getTripTime());
                 }
                 finish();
             }
@@ -142,60 +141,27 @@ public class TripReminderActivity extends AppCompatActivity {
         }
     }
 
-    private void showNotification(Context context, int notificationId, String title, String content) {
-        Intent intent = new Intent(context, TripReminderActivity.class);
+    private void showNotification(Context mContext, int notificationId, String title, String content) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mContext.getApplicationContext(), "notify_001");
+
+        Intent intent = new Intent(mContext, TripReminderActivity.class);
         if (trip != null) {
             intent.putExtra("reminderTrip", trip);
         }
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Notification.Builder builder = new Notification.Builder(context)
+        mBuilder.setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.app_logo_notification)
                 .setContentTitle(title)
                 .setContentText(content)
-                .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.app_logo)
                 .setAutoCancel(true)
                 .setOngoing(true)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo));
 
-        Notification notification;
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = builder.build();
-        } else {
-            notification = builder.getNotification();
+            mBuilder.setPriority(Notification.PRIORITY_MAX);
         }
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationId, notification);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mMediaPlayer != null) {
-            mMediaPlayer.stop();
-        }
-    }
-
-    private void show2(Context mContext){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(mContext.getApplicationContext(), "notify_001");
-        Intent ii = new Intent(mContext.getApplicationContext(), TripReminderActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, ii, 0);
-
-        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        bigText.bigText("AhAhmed");
-        bigText.setBigContentTitle("Today's Bible Verse");
-        bigText.setSummaryText("Text in detail");
-
-        mBuilder.setContentIntent(pendingIntent);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
-        mBuilder.setContentTitle("Your Title");
-        mBuilder.setContentText("Your text");
-        mBuilder.setPriority(Notification.PRIORITY_MAX);
-        mBuilder.setStyle(bigText);
 
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -205,9 +171,22 @@ public class TripReminderActivity extends AppCompatActivity {
             NotificationChannel channel = new NotificationChannel("notify_001",
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            mNotificationManager.createNotificationChannel(channel);
+            if (mNotificationManager != null) {
+                mNotificationManager.createNotificationChannel(channel);
+            }
         }
 
-        mNotificationManager.notify(0, mBuilder.build());
+        if (mNotificationManager != null) {
+            mNotificationManager.notify(notificationId, mBuilder.build());
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+        }
     }
 }
