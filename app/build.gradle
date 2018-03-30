@@ -36,7 +36,7 @@ dependencies {
 
     //<!-- Ibrahim END -->
     //<!-- Ahmed -->
-
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
     //<!-- Ahmed END -->
     //<!-- Shimaa -->
     compile 'com.google.android.gms:play-services-auth:11.8.0'
