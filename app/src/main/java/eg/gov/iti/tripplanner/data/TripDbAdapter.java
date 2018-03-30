@@ -42,7 +42,10 @@ public class TripDbAdapter {
 
         values.put(TripDbHelper.COLUMN_TRIP_DATE, trip.getTripDate());
         values.put(TripDbHelper.COLUMN_TRIP_TIME, trip.getTripTime());
-        values.put(TripDbHelper.COLUMN_TRIP_NOTES, trip.getNotes());
+
+        //convert ArrayList of notes to string
+        String notes = getNotesAsOneString(trip.getNotes());
+        values.put(TripDbHelper.COLUMN_TRIP_NOTES, notes);
 
         long id = db.insert(TripDbHelper.TABLE_NAME, null, values);
         db.close();
@@ -68,7 +71,10 @@ public class TripDbAdapter {
 
         values.put(TripDbHelper.COLUMN_TRIP_DATE, trip.getTripDate());
         values.put(TripDbHelper.COLUMN_TRIP_TIME, trip.getTripTime());
-        values.put(TripDbHelper.COLUMN_TRIP_NOTES, trip.getNotes());
+
+        //convert ArrayList of notes to string
+        String notes = getNotesAsOneString(trip.getNotes());
+        values.put(TripDbHelper.COLUMN_TRIP_NOTES, notes);
 
         int rowsUpdated = db.update(TripDbHelper.TABLE_NAME, values, TripDbHelper.COLUMN_ID + "=?",
                 new String[]{String.valueOf(trip.getTripId())});
@@ -111,7 +117,7 @@ public class TripDbAdapter {
     public List<Trip> getAllTrips() {
         List<Trip> allTrips = new ArrayList<>();
 
-        String selectQuery = "SELECT * FROM " + TripDbHelper.TABLE_NAME + " ORDER BY " + TripDbHelper.COLUMN_TRIP_DATE + ", " + TripDbHelper.COLUMN_TRIP_TIME;
+        String selectQuery = "SELECT * FROM " + TripDbHelper.TABLE_NAME + " ORDER BY " + TripDbHelper.COLUMN_TRIP_TIME + " DESC";
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -151,5 +157,15 @@ public class TripDbAdapter {
         trip.setNotes(notes);
 
         return trip;
+    }
+
+
+    private String getNotesAsOneString(List<String> notes) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < notes.size(); i++) {
+            builder.append(notes.get(i).concat(","));
+        }
+
+        return builder.toString();
     }
 }

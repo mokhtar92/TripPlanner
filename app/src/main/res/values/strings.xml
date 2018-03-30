@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">TripPlanner</string>
+    <string name="app_name">WeGo</string>
     <string name="action_sync">Sync</string>
     <!-- Mokhtar -->
+    <string name="str_trip_name">Trip name</string>
     <string name="str_start_trip">Start Trip</string>
     <string name="str_from">From</string>
     <string name="str_to">To</string>
@@ -9,16 +10,23 @@
     <string name="str_cancel">Cancel</string>
     <string name="str_login">Login</string>
     <string name="str_sign_up">Sign up</string>
+    <string name="str_radio_btn_single_trip">Single Trip</string>
+    <string name="str_radio_btn_round_trip">Round Trip</string>
+    <string name="str_reminder_start_trip">Start Trip</string>
     <!-- Mokhtar END -->
     <!-- Ibrahim -->
-
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
     <!-- Ibrahim END -->
     <!-- Ahmed -->
-
+    <string name="title_activity_maps">DisplayRoutes</string>
     <!-- Ahmed END -->
     <!-- Shimaa -->
     <string name="trip_name">Trip Name</string>
     <string name="saveTrip">Save Trip</string>
-    <string name="title_activity_maps">DisplayRoutes</string>
+    <string name="str_trip_date">Trip date</string>
+    <string name="str_trip_time">Trip Time</string>
+    <string name="str_notes">Notes</string>
+    <string name="str_trip_type">Trip Type</string>
     <!-- Shimaa END -->
 </resources>

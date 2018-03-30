@@ -12,6 +12,8 @@ import java.util.List;
 
 public class Trip implements Parcelable {
 
+    private String fireBaseTripId;
+
     private String tripName;
     private int tripId;
     private int tripStatus;
@@ -32,6 +34,15 @@ public class Trip implements Parcelable {
 
 
     public Trip() {
+    }
+
+
+    public String getFireBaseTripId() {
+        return fireBaseTripId;
+    }
+
+    public void setFireBaseTripId(String fireBaseTripId) {
+        this.fireBaseTripId = fireBaseTripId;
     }
 
     public String getTripName() {
@@ -114,13 +125,8 @@ public class Trip implements Parcelable {
         this.endLat = endLat;
     }
 
-    public String getNotes() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < notes.size(); i++) {
-            builder.append(notes.get(i).concat(","));
-        }
-
-        return builder.toString();
+    public List<String> getNotes() {
+        return notes;
     }
 
     public void setNotes(List<String> notes) {
@@ -143,8 +149,8 @@ public class Trip implements Parcelable {
         this.tripTime = tripTime;
     }
 
-
     protected Trip(Parcel in) {
+        fireBaseTripId = in.readString();
         tripName = in.readString();
         tripId = in.readInt();
         tripStatus = in.readInt();
@@ -172,6 +178,7 @@ public class Trip implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fireBaseTripId);
         dest.writeString(tripName);
         dest.writeInt(tripId);
         dest.writeInt(tripStatus);

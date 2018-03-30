@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "431709079478",
+    "firebase_url": "https://tripplanner-c560e.firebaseio.com",
+    "project_id": "tripplanner-c560e",
+    "storage_bucket": "tripplanner-c560e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431709079478:android:d8dd26d58bbcc6b7",
+        "android_client_info": {
+          "package_name": "eg.gov.iti.tripplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431709079478-d5s3d4l3pb976e5d84m9co3mbn7fda06.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eg.gov.iti.tripplanner",
+            "certificate_hash": "118d64d8eaa4e15fe7a75c7ee174ecd1b4c61e36"
+          }
+        },
+        {
+          "client_id": "431709079478-kqqjuolcvgtv29b1ugsdr3v1dif89fu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn2S2wzEJnZvI9gK-ULhpvTZ1VkRqYD-o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431709079478-kqqjuolcvgtv29b1ugsdr3v1dif89fu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

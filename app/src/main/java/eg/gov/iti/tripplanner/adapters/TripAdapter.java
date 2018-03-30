@@ -1,6 +1,8 @@
 package eg.gov.iti.tripplanner.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,6 +31,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private ArrayList<Trip> myList;
     private OnItemClickListener myListener;
 
+    private DatabaseReference myRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userId;
+    private FirebaseUser user;
+
+
+
     public interface OnItemClickListener {
         void onItemClicked(int position);
     }
@@ -35,6 +51,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public TripAdapter(Context myContext, ArrayList<Trip> myList) {
         this.myContext = myContext;
         this.myList = myList;
+        mAuth= FirebaseAuth.getInstance();
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        myRef=mFirebaseDatabase.getReference();
+        user=mAuth.getCurrentUser();
+        userId=user.getUid();
     }
 
     @Override
@@ -64,6 +85,21 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             @Override
             public void onClick(View v) {
                 removeItem(trip);
+
+
+
+                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
+            }
+        });
+        holder.startTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+myList.get(position).getEndLat()+","+myList.get(position).getEndLong());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                myContext.startActivity(mapIntent);
+
             }
         });
     }
@@ -85,6 +121,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         RelativeLayout startTrip;
         ImageView tripImageView, editTrip, deleteTrip;
         TextView tripName, tripTime, tripDate, startName, endName;
+
 
         public TripViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);

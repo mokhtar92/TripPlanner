@@ -18,10 +18,10 @@ public class TripDbHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "TRIP_REC";
 
     public static final String COLUMN_ID = "_ID";
+    public static final String COLUMN_FIREBASE_ID = "FIREBASE_ID";
     public static final String COLUMN_TRIP_NAME = "TRIP_NAME";
     public static final String COLUMN_TRIP_STATUS = "TRIP_STATUS";
     public static final String COLUMN_TRIP_TYPE = "TRIP_TYPE";
-
 
     public static final String COLUMN_START_NAME = "START_NAME";
     public static final String COLUMN_START_LONG = "START_LONG";
@@ -53,6 +53,7 @@ public class TripDbHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME +
                 "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_FIREBASE_ID + " TEXT, " +
                 COLUMN_TRIP_NAME + " TEXT, " +
                 COLUMN_TRIP_STATUS + " INTEGER, " +
                 COLUMN_TRIP_TYPE + " INTEGER, " +
