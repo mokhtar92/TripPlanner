@@ -45,12 +45,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mAuth=FirebaseAuth.getInstance();
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
+
+        //mFirebaseDatabase.getReference("users").keepSynced(true);
+        mAuth=FirebaseAuth.getInstance();
+
         myRef=mFirebaseDatabase.getReference();
+
+
         user=mAuth.getCurrentUser();
         userId=user.getUid();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
 
