@@ -19,11 +19,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import eg.gov.iti.tripplanner.adapters.NoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 
 public class TripReminderActivity extends AppCompatActivity {
@@ -46,6 +55,9 @@ public class TripReminderActivity extends AppCompatActivity {
         ImageView startTripImageView = findViewById(R.id.reminder_start_trip_image_view);
         ImageView notNowTripImageView = findViewById(R.id.reminder_notNow_image_view);
         ImageView stopAlarmImageView = findViewById(R.id.reminder_cancel_image_view);
+        final ImageView expandNotesList = findViewById(R.id.expand_notes_image_view);
+
+        final RelativeLayout notesContainer = findViewById(R.id.notes_container_view);
 
         Intent receivedIntent = getIntent();
         if (receivedIntent != null) {
@@ -54,6 +66,22 @@ public class TripReminderActivity extends AppCompatActivity {
                 tripName.setText(trip.getTripName());
                 tripTime.setText(trip.getTripTime());
                 tripDate.setText(trip.getTripDate());
+
+                ListView notesListView = findViewById(R.id.notes_list_view);
+                NoteAdapter adapter = new NoteAdapter(getApplicationContext(), trip.getNotes());
+                notesListView.setAdapter(adapter);
+
+                notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        CheckBox checkBox = view.findViewById(R.id.note_check_box);
+                        if (!checkBox.isChecked()) {
+                            checkBox.setChecked(true);
+                        } else {
+                            checkBox.setChecked(false);
+                        }
+                    }
+                });
             }
         }
 
@@ -87,6 +115,20 @@ public class TripReminderActivity extends AppCompatActivity {
                     mMediaPlayer.stop();
                 }
                 finish();
+            }
+        });
+
+        expandNotesList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (notesContainer.getVisibility() == View.INVISIBLE) {
+                    notesContainer.setVisibility(View.VISIBLE);
+                    expandNotesList.setImageResource(R.drawable.ic_expand_less_black_48dp);
+
+                } else {
+                    notesContainer.setVisibility(View.INVISIBLE);
+                    expandNotesList.setImageResource(R.drawable.ic_expand_more_black_48dp);
+                }
             }
         });
 
