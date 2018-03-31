@@ -3,6 +3,7 @@ package eg.gov.iti.tripplanner;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -32,18 +33,20 @@ public class TripDetailsActivity extends AppCompatActivity {
             Trip trip = intent.getParcelableExtra("tripDetails");
             if (trip != null) {
 
-                long unixTime = Long.parseLong(trip.getTripTime());
                 Calendar c = Calendar.getInstance();
-                c.setTimeInMillis(unixTime * 1000);
+                Long unixTime=Long.parseLong(trip.getTripTime()) * 1000;
+                c.setTimeInMillis(unixTime);
 
                 int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
+                int month = c.get(Calendar.MONTH)+1;
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
                 String test = sdf.format(unixTime).toString();
 
-                tripDate.setText(day + "/" + month + "/" + year);
+                tripDate.setText(day+"/"+month+"/"+year);
+                //tripDate.setText(c.getTime().toString());
+
                 tripTime.setText(test);
                 tripName.setText(trip.getTripName());
                 tripFrom.setText(trip.getStartName());
