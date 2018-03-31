@@ -1,6 +1,7 @@
 package eg.gov.iti.tripplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -45,6 +46,7 @@ import java.util.Locale;
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.TripManager;
 
 public class New_Trip_Activity extends AppCompatActivity {
     private Button addNote;
@@ -196,13 +198,20 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         trip.setNotes(notes);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-            Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(New_Trip_Activity.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(New_Trip_Activity.this, "Trip added successfully!", Toast.LENGTH_SHORT).show();
             String tripId = myRef.push().getKey();
             trip.setFireBaseTripId(tripId);
             String userId2 = new String(userId);
             myRef.child("users").child(userId2).child(tripId).setValue(trip);
+
+            //Set alarm here
+            Intent intent = new Intent(getApplicationContext(), TripReminderActivity.class);
+            intent.putExtra("reminderTrip", trip);
+            int currentTime = (int) (System.currentTimeMillis() / 1000);
+            int timeOfTrip = Integer.parseInt(trip.getTripTime());
+            TripManager.scheduleNewTrip(getApplicationContext(), timeOfTrip, intent, timeOfTrip - currentTime);
 
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(unixTime * 1000);
