@@ -16,21 +16,12 @@ public class TripRescheduleReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Reboot detected..TripPlanner", Toast.LENGTH_LONG).show();
-    }
+        String action = intent.getAction();
+        if (action != null) {
+            if (action.equals("android.intent.action.LOCKED_BOOT_COMPLETED") || action.equals("android.intent.action.BOOT_COMPLETED") ||
+                    action.equals("android.intent.action.QUICKBOOT_POWERON") || action.equals("android.intent.action.REBOOT"))
 
-
-    private void rescheduleUpcomingTrips(Context context, int tripId, long tripTime) {
-        Toast.makeText(context, "Booted..  TripPlanner", Toast.LENGTH_LONG).show();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 5);
-
-        Intent intent = new Intent(context, TripReminderActivity.class);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                Toast.makeText(context, "Reboot detected..TripPlanner", Toast.LENGTH_LONG).show();
+        }
     }
 }
