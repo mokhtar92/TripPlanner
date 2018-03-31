@@ -10,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -35,6 +37,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+
+import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 public class editTrip extends AppCompatActivity {
@@ -50,18 +54,23 @@ public class editTrip extends AppCompatActivity {
     private String userId;
     private FirebaseUser user;
     Trip trip;
+    private ListView notesListView;
+    private List<String> notes;
+    private Button addNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_trip);
         mAuth= FirebaseAuth.getInstance();
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         myRef=mFirebaseDatabase.getReference();
         user=mAuth.getCurrentUser();
         userId=user.getUid();
         Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
-        setContentView(R.layout.activity_edit_trip);
-        saveButton = findViewById(R.id.editTripButton);
+
+        addNote = findViewById(R.id.edit_note_button);
+        notesListView = findViewById(R.id.edit_note_list_view);
         tripName = findViewById(R.id.edit_tripName);
         tripFrom = findViewById(R.id.edit_tripFrom);
         tripTo = findViewById(R.id.edit_tripTo);
@@ -75,9 +84,7 @@ public class editTrip extends AppCompatActivity {
             tripName.setText(trip.getTripName());
             tripFrom.setText(trip.getStartName());
             tripTo.setText(trip.getEndName());
-            //datePicker.updateDate(2018,9,25);
-            //timePicker.setCurrentHour(8);
-           // timePicker.setCurrentHour(trip.getT);
+
 
 //            Calendar calendar=Calendar.getInstance();
 //            calendar.setTimeZone(TimeZone.getTimeZone("GMT+2"));
@@ -92,6 +99,41 @@ public class editTrip extends AppCompatActivity {
             timePicker.setCurrentHour(calendar.getTime().getHours());
             timePicker.setCurrentMinute(calendar.getTime().getMinutes());
 
+
+
+            notes = trip.getNotes();
+
+            if (notes == null){
+                notes=new ArrayList<>();
+                notes.add("No notes to display");
+            }
+
+            final AddNoteAdapter noteAdapter = new AddNoteAdapter(getApplicationContext(), notes);
+            notesListView.setAdapter(noteAdapter);
+
+            notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    notes.remove(position);
+                    noteAdapter.notifyDataSetChanged();
+                }
+            });
+
+            addNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String editTextNote = tripNotes.getText().toString().trim();
+                    if (!editTextNote.isEmpty()) {
+                        notes.add(editTextNote);
+                        tripNotes.setText("");
+                        noteAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(editTrip.this, "Can't add empty note", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }
 
 
@@ -99,62 +141,49 @@ public class editTrip extends AppCompatActivity {
         // create auto complete Adapter
         LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
         GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
-//        // check network connection
-//        if (isNetworkConnected()) {
-//            Toast.makeText(this, "connected", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "please check your network connection", Toast.LENGTH_SHORT).show();
-//        }
+
         PlaceAutocompleteAdapter placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Lat_Lang_bounds, null);
         tripFrom.setAdapter(placeAutocompleteAdapter);
         tripTo.setAdapter(placeAutocompleteAdapter);
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String TName = tripName.getText().toString();
-                String TFrom = tripFrom.getText().toString();
-                String TTo = tripTo.getText().toString();
-//                String TNotes = tripNotes.getText().toString();
-                Trip trip = new Trip();
-                List noteList = new ArrayList();
-//                noteList.add(TNotes);
-                Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-                Long unixTime = calendar.getTimeInMillis() / 1000;
-                /// get lat and long
-                // Address fromAddress = getLat_Lang(TFrom);
-                //trip.setStartLong(fromAddress.getLongitude());
-                trip.setStartLong(30.067401);
-                //trip.setStartLat(fromAddress.getLatitude());
-                trip.setStartLat(30.067401);
-                //Address toAddress = getLat_Lang(TTo);
-                //trip.setEndLong(toAddress.getLongitude());
-                //trip.setEndLat(toAddress.getLatitude());
-
-
-                trip.setEndLat(30.067401);
-                trip.setEndLong(31.026179);
-                trip.setTripName(TName);
-                trip.setStartName(TFrom);
-                trip.setEndName(TTo);
-                trip.setNotes(noteList);
-                if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-                    Toast.makeText(editTrip.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
-                    return;
-
-                } else {
-                    Toast.makeText(editTrip.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
-                }
-
-                String tripId=myRef.push().getKey();
-                trip.setFireBaseTripId(tripId);
-                String userId2=new String(userId);
-                myRef.child("users").child(userId2).child(tripId).setValue(trip);
-
-
-            }
-
-        });
+     //   saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String TName = tripName.getText().toString();
+//                String TFrom = tripFrom.getText().toString();
+//                String TTo = tripTo.getText().toString();
+////                String TNotes = tripNotes.getText().toString();
+//                Trip trip = new Trip();
+//                List noteList = new ArrayList();
+////                noteList.add(TNotes);
+//                Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+//
+//
+//                trip.setStartLong(30.067401);
+//                trip.setStartLat(30.067401);
+//                trip.setEndLat(30.067401);
+//                trip.setEndLong(31.026179);
+//                trip.setTripName(TName);
+//                trip.setStartName(TFrom);
+//                trip.setEndName(TTo);
+//                trip.setNotes(noteList);
+//                if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
+//                    Toast.makeText(editTrip.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+//                    return;
+//
+//                } else {
+//                    Toast.makeText(editTrip.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                String tripId=myRef.push().getKey();
+//                trip.setFireBaseTripId(tripId);
+//                String userId2=new String(userId);
+//                myRef.child("users").child(userId2).child(tripId).setValue(trip);
+//
+//
+//            }
+//
+//        });
     }
 
     protected Address getLat_Lang(String place) {
