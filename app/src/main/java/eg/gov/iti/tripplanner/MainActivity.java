@@ -61,94 +61,98 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        userId=user.getUid();
+        else{
+            userId=user.getUid();
 
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
 
-            @Override
+                @Override
 
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if (user != null) {
-
-
-
-                    toastMessage("Successfully signed in with: " + user.getEmail());
-
-                } else {
+                    if (user != null) {
 
 
-                    toastMessage("Successfully signed out.");
+
+                        toastMessage("Successfully signed in with: " + user.getEmail());
+
+                    } else {
+
+
+                        toastMessage("Successfully signed out.");
+
+                    }
+
+                    // ...
 
                 }
 
-                // ...
-
-            }
-
-        };
+            };
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent addNewTripActivity = new Intent(MainActivity.this, New_Trip_Activity.class);
-                startActivity(addNewTripActivity);
-            }
-        });
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent addNewTripActivity = new Intent(MainActivity.this, New_Trip_Activity.class);
+                    startActivity(addNewTripActivity);
+                }
+            });
 
-        recyclerView = findViewById(R.id.recyclerView);
-        myList = new ArrayList<>();
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView = findViewById(R.id.recyclerView);
+            myList = new ArrayList<>();
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
 
-        adapter = new TripAdapter(this, myList);
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int position) {
-                Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
-                intent.putExtra("tripDetails", myList.get(position));
-                startActivity(intent);
-            }
-        });
+            adapter = new TripAdapter(this, myList);
+            recyclerView.setAdapter(adapter);
+            adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClicked(int position) {
+                    Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
+                    intent.putExtra("tripDetails", myList.get(position));
+                    startActivity(intent);
+                }
+            });
 
-        myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Trip trip=dataSnapshot.getValue(Trip.class);
-                myList.add(trip);
-                adapter.notifyDataSetChanged();
+            myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Trip trip=dataSnapshot.getValue(Trip.class);
+                    myList.add(trip);
+                    adapter.notifyDataSetChanged();
 
 
-            }
+                }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        }
+
 
 
     }
