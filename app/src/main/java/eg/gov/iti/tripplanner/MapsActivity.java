@@ -1,5 +1,6 @@
 package eg.gov.iti.tripplanner;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,13 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PolylineOptions polylineOptions = null;
     ArrayList<Trip> tripsPast = null;
 
+    DatabaseReference myRef;
+    FirebaseDatabase mFirebaseDatabase;
+    FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    private String userId;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,57 +65,83 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+//        mFirebaseDatabase= FirebaseDatabase.getInstance();
+//
+//        //mFirebaseDatabase.getReference("users").keepSynced(true);
+//        mAuth= FirebaseAuth.getInstance();
+//
+//        myRef=mFirebaseDatabase.getReference();
+//
+//
+//        user=mAuth.getCurrentUser();
+//
+//        userId=user.getUid();
+//
+//        tripsPast = new ArrayList<Trip>();
+//
+//        myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Trip trip=dataSnapshot.getValue(Trip.class);
+//                if (trip.getTripStatus()==1){
+//                    tripsPast.add(trip);
+//                    Toast.makeText(MapsActivity.this, "hello", Toast.LENGTH_SHORT).show();
+//                    // mMap.wait();
+//
+//                }
+//
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                Trip trip=dataSnapshot.getValue(Trip.class);
+//                if (trip.getTripStatus()==1){
+//
+//                    tripsPast.add(trip);
+//
+//                }
+////                for (int i=0;i<tripsPast.size();i++){
+////                    if (trip.getFireBaseTripId().equals(tripsPast.get(i).getFireBaseTripId())){
+////                        tripsPast.set(i,trip);
+////
+////                        break;
+////
+////                    }
+//
+//
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
         mapFragment.getMapAsync(this);
 
-        tripsPast = new ArrayList<Trip>();
 
-        Trip trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        trip.setStartLat(30.044420);
-        trip.setStartLong(31.235712);
-        trip.setEndLat(31.200092);
-        trip.setEndLong(29.918739);
-        tripsPast.add(trip);
+        tripsPast=getIntent().getParcelableArrayListExtra("pastTrips");
 
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        trip.setStartLat(24.088938);
-        trip.setStartLong(32.899829);
-        trip.setEndLat(30.699150);
-        trip.setEndLong(30.668592);
-        tripsPast.add(trip);
 
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        trip.setStartLat(31.400810);
-        trip.setStartLong(30.417189);
-        trip.setEndLat(30.044420);
-        trip.setEndLong(31.235712);
-        tripsPast.add(trip);
 
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        trip.setStartLat(31.265289);
-        trip.setStartLong(32.301866);
-        trip.setEndLat(27.915817);
-        trip.setEndLong(34.329950);
-        tripsPast.add(trip);
 
     }
 

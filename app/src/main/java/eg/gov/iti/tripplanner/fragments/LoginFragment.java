@@ -231,6 +231,7 @@ public class LoginFragment extends Fragment {
                             Intent intent=new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("userId",userId);
                             startActivity(intent);
+                            getActivity().finish();
 
                             //updateUI(user);
                         } else {
