@@ -25,18 +25,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
+import eg.gov.iti.tripplanner.model.Trip;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     ArrayList points = null;
     PolylineOptions polylineOptions = null;
+    ArrayList<Trip> tripsPast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        tripsPast = new ArrayList<Trip>();
+
+        Trip trip = new Trip();
+        trip.setEndName("smartVillage");
+        trip.setTripName("Gahim fel ITI");
+        trip.setStartName("Giza");
+        trip.setTripDate("21/3/2018");
+        trip.setTripTime("10:45 am");
+        trip.setStartLat(30.044420);
+        trip.setStartLong(31.235712);
+        trip.setEndLat(31.200092);
+        trip.setEndLong(29.918739);
+        tripsPast.add(trip);
+
+        trip = new Trip();
+        trip.setEndName("smartVillage");
+        trip.setTripName("Gahim fel ITI");
+        trip.setStartName("Giza");
+        trip.setTripDate("21/3/2018");
+        trip.setTripTime("10:45 am");
+        trip.setStartLat(24.088938);
+        trip.setStartLong(32.899829);
+        trip.setEndLat(30.699150);
+        trip.setEndLong(30.668592);
+        tripsPast.add(trip);
+
+        trip = new Trip();
+        trip.setEndName("smartVillage");
+        trip.setTripName("Gahim fel ITI");
+        trip.setStartName("Giza");
+        trip.setTripDate("21/3/2018");
+        trip.setTripTime("10:45 am");
+        trip.setStartLat(31.400810);
+        trip.setStartLong(30.417189);
+        trip.setEndLat(30.044420);
+        trip.setEndLong(31.235712);
+        tripsPast.add(trip);
+
+        trip = new Trip();
+        trip.setEndName("smartVillage");
+        trip.setTripName("Gahim fel ITI");
+        trip.setStartName("Giza");
+        trip.setTripDate("21/3/2018");
+        trip.setTripTime("10:45 am");
+        trip.setStartLat(31.265289);
+        trip.setStartLong(32.301866);
+        trip.setEndLat(27.915817);
+        trip.setEndLong(34.329950);
+        tripsPast.add(trip);
+
     }
 
 
@@ -62,22 +118,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap = googleMap;
+
 //        mMap.setMinZoomPreference(6f);
 //        mMap.setMaxZoomPreference(14f);
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        ArrayList points = new ArrayList();
-        points.add(new LatLng(	30.044281, 31.340002));
-        points.add(new LatLng(		31.205753, 29.924526));
+
+
+        for (Trip t : tripsPast){
+
+            ArrayList points = new ArrayList();
+
+            points.add(new LatLng(	t.getStartLat(), t.getStartLong()));
+            points.add(new LatLng(		t.getEndLat(), t.getEndLong()));
+            String url = getRequestedUrl((LatLng)points.get(0),(LatLng) points.get(1));
+            TaskRequestConnection taskRequestConnection = new TaskRequestConnection();
+            taskRequestConnection.execute(url);
+
+        }
 
 
 
 
-        String url = getRequestedUrl((LatLng)points.get(0),(LatLng) points.get(1));
-
-        TaskRequestConnection taskRequestConnection = new TaskRequestConnection();
-        taskRequestConnection.execute(url);
 
 
     }
@@ -192,7 +254,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 polylineOptions.addAll(pointsRet);
                 polylineOptions.width(10);
-                polylineOptions.color(Color.BLUE);
+
+                int [] colors = new int[5];
+                colors[0] = Color.BLUE;
+                colors[1] = Color.RED;
+                colors[2] = Color.GREEN;
+                colors[3] = Color.CYAN;
+                colors[4] = Color.GRAY;
+
+
+
+
+
+                polylineOptions.color(colors[new Random().nextInt((4 - 0) + 1) + 0]);
                 polylineOptions.geodesic(true);
             }
 

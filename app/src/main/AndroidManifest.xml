@@ -54,11 +54,7 @@
 
         <activity android:name=".LoginActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Mokhtar END -->
@@ -75,7 +71,12 @@
 
         <!-- Ibrahim END -->
         <!-- Ahmed -->
-
+        <activity android:name=".MapsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- Ahmed END -->
         <!-- Shimaa -->
