@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import eg.gov.iti.tripplanner.model.Trip;
@@ -29,14 +31,26 @@ public class TripDetailsActivity extends AppCompatActivity {
         if (intent != null) {
             Trip trip = intent.getParcelableExtra("tripDetails");
             if (trip != null) {
-                tripDate.setText("Date");
-                tripTime.setText("Time");
+
+                long unixTime = Long.parseLong(trip.getTripTime());
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(unixTime * 1000);
+
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                String test = sdf.format(unixTime).toString();
+
+                tripDate.setText(day + "/" + month + "/" + year);
+                tripTime.setText(test);
                 tripName.setText(trip.getTripName());
                 tripFrom.setText(trip.getStartName());
                 tripTo.setText(trip.getEndName());
 
                 List<String> notes = trip.getNotes();
-                if(notes !=null){
+                if (notes != null) {
                     for (String note : notes) {
                         tripNotes.append("-" + note.concat("\n"));
                     }
