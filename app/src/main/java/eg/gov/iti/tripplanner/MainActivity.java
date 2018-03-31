@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClicked(int position) {
                 Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
-                intent.putExtra("trip", myList.get(position));
+                intent.putExtra("tripDetails", myList.get(position));
                 startActivity(intent);
             }
         });
