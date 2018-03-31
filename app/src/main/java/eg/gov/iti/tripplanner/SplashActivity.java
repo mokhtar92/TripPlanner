@@ -9,10 +9,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private static boolean isFirstTime = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (isFirstTime){
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            isFirstTime = false;
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
