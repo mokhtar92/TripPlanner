@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TripAdapter adapter;
-    ArrayList<Trip> myList;
+    ArrayList<Trip> myList,pastTrips;
 
     DatabaseReference myRef;
     FirebaseDatabase mFirebaseDatabase;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         myList = new ArrayList<>();
+        pastTrips=new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -123,8 +124,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Trip trip=dataSnapshot.getValue(Trip.class);
-                myList.add(trip);
-                adapter.notifyDataSetChanged();
+                if (trip.getTripStatus()==0){
+                    myList.add(trip);
+                    adapter.notifyDataSetChanged();
+                }else{
+                    pastTrips.add(trip);
+                }
+
 
 
             }
@@ -181,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
-            Intent startDetailsActivity = new Intent(MainActivity.this, TripDetailsActivity.class);
+            Intent startDetailsActivity = new Intent(MainActivity.this, MapsActivity.class);
+            startDetailsActivity.putExtra("pastTrips",pastTrips);
             startActivity(startDetailsActivity);
             return true;
         }
