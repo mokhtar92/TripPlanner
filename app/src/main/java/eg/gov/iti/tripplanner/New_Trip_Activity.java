@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +22,12 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
@@ -42,7 +48,7 @@ import eg.gov.iti.tripplanner.model.Trip;
 
 public class New_Trip_Activity extends AppCompatActivity {
     private Button addNote;
-    private AutoCompleteTextView tripFrom, tripTo;
+   // private AutoCompleteTextView tripFrom, tripTo;
     private EditText tripName, tripNotes;
     private DatePicker datePicker;
     private TimePicker timePicker;
@@ -55,6 +61,10 @@ public class New_Trip_Activity extends AppCompatActivity {
     private String userId;
     private FirebaseUser user;
     private List<String> notes;
+    String TFrom = "";
+    String TTo ="";
+    LatLng fromLatLng;
+    LatLng toLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +73,46 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         addNote = findViewById(R.id.add_note_button);
         tripName = findViewById(R.id.tripName);
-        tripFrom = findViewById(R.id.tripFrom);
-        tripTo = findViewById(R.id.tripTo);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG1", "Place: " + place.getName());
+                TFrom=place.getName().toString();
+                fromLatLng=place.getLatLng();
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG1", "An error occurred: " + status);
+            }
+        });
+        PlaceAutocompleteFragment autocompleteFragment2 = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment2);
+
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG1", "Place: " + place.getName());
+
+                TTo=place.getName().toString();
+                toLatLng=place.getLatLng();
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG1", "An error occurred: " + status);
+            }
+        });
         tripNotes = findViewById(R.id.notes);
         datePicker = findViewById(R.id.datePicker);
         timePicker = findViewById(R.id.timePicker);
@@ -76,13 +124,6 @@ public class New_Trip_Activity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         userId = user.getUid();
         Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
-        // create auto complete Adapter
-        LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
-        GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
-
-        PlaceAutocompleteAdapter placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Lat_Lang_bounds, null);
-        tripFrom.setAdapter(placeAutocompleteAdapter);
-        tripTo.setAdapter(placeAutocompleteAdapter);
 
         notes = new ArrayList<>();
 
@@ -113,23 +154,6 @@ public class New_Trip_Activity extends AppCompatActivity {
         });
     }
 
-    protected Address getLat_Lang(String place) {
-        Geocoder coder = new Geocoder(New_Trip_Activity.this);
-        List<Address> address;
-        Address location = null;
-
-        try {
-            address = coder.getFromLocationName(place, 5);
-
-            if (address == null) {
-
-            }
-            location = address.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return location;
-    }
 
     //network connection func
     private boolean isNetworkConnected() {
@@ -152,40 +176,53 @@ public class New_Trip_Activity extends AppCompatActivity {
 
     private void saveNewTrip() {
         String TName = tripName.getText().toString();
-        String TFrom = tripFrom.getText().toString();
-        String TTo = tripTo.getText().toString();
+      ///////////////////////**********************************
 
-        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-        Long unixTime = calendar.getTimeInMillis() / 1000;
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(),0);
+        Long time= calendar.getTimeInMillis();
+        System.out.println("********************************************");
+        System.out.println(calendar.getTime());
+        System.out.println(calendar.getTimeInMillis()/1000);
+        Long unixTime = calendar.getTimeInMillis()/1000 ;
 
-        /// get lat and long
+
         Trip trip = new Trip();
-        // Address fromAddress = getLat_Lang(TFrom);
-        //trip.setStartLong(fromAddress.getLongitude());
-        trip.setStartLong(30.067401);
-        //trip.setStartLat(fromAddress.getLatitude());
-        trip.setStartLat(30.067401);
-        //Address toAddress = getLat_Lang(TTo);
-        //trip.setEndLong(toAddress.getLongitude());
-        //trip.setEndLat(toAddress.getLatitude());
-        trip.setEndLat(30.067401);
-        trip.setEndLong(31.026179);
+        /// get lat and long from google places autocomplete Api
+        trip.setStartLong(fromLatLng.longitude);
+        trip.setStartLat(fromLatLng.latitude);
+        trip.setEndLong(toLatLng.longitude);
+        trip.setEndLat(toLatLng.latitude);
+
         trip.setTripName(TName);
         trip.setStartName(TFrom);
         trip.setEndName(TTo);
+        trip.setTripTime(unixTime.toString());
+
         trip.setNotes(notes);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
             Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
-            return;
 
         } else {
             Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+            String tripId = myRef.push().getKey();
+            trip.setFireBaseTripId(tripId);
+            String userId2 = new String(userId);
+            myRef.child("users").child(userId2).child(tripId).setValue(trip);
+
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(unixTime* 1000);
+
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            System.out.println("**********************************");
+            System.out.println("unix time = "+unixTime*1000);
+            System.out.println("return time ="+c.getTime());
+            finish();
+
         }
 
-        String tripId = myRef.push().getKey();
-        trip.setFireBaseTripId(tripId);
-        String userId2 = new String(userId);
-        myRef.child("users").child(userId2).child(tripId).setValue(trip);
+
     }
 
     @Override
