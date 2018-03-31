@@ -91,7 +91,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.tripDate.setText(day + "/" + month + "/" + year);
         holder.startName.setText(trip.getStartName());
         holder.endName.setText(trip.getEndName());
-        holder.tripImageView.setImageResource(R.drawable.trip);
+        holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
