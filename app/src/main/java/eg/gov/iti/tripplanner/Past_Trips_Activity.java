@@ -34,37 +34,7 @@ public class Past_Trips_Activity extends Activity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Trip trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        myList.add(trip);
 
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        myList.add(trip);
-
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        myList.add(trip);
-
-        trip = new Trip();
-        trip.setEndName("smartVillage");
-        trip.setTripName("Gahim fel ITI");
-        trip.setStartName("Giza");
-        trip.setTripDate("21/3/2018");
-        trip.setTripTime("10:45 am");
-        myList.add(trip);
 
         adapter = new PastTripAdapter(this, myList);
         recyclerView.setAdapter(adapter);

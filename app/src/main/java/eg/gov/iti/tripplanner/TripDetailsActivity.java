@@ -29,16 +29,19 @@ public class TripDetailsActivity extends AppCompatActivity {
         if (intent != null) {
             Trip trip = intent.getParcelableExtra("tripDetails");
             if (trip != null) {
-                tripDate.setText(trip.getTripDate());
-                tripTime.setText(trip.getTripTime());
+                tripDate.setText("Date");
+                tripTime.setText("Time");
                 tripName.setText(trip.getTripName());
                 tripFrom.setText(trip.getStartName());
                 tripTo.setText(trip.getEndName());
 
                 List<String> notes = trip.getNotes();
-                for (String note : notes) {
-                    tripNotes.append("-" + note.concat("\n"));
+                if(notes !=null){
+                    for (String note : notes) {
+                        tripNotes.append("-" + note.concat("\n"));
+                    }
                 }
+
             }
         }
 

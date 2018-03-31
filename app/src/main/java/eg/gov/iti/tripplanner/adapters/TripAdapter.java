@@ -18,7 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import eg.gov.iti.tripplanner.New_Trip_Activity;
 import eg.gov.iti.tripplanner.R;
+import eg.gov.iti.tripplanner.editTrip;
 import eg.gov.iti.tripplanner.model.Trip;
 
 /**
@@ -99,6 +101,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 myContext.startActivity(mapIntent);
+
+            }
+        });
+
+        holder.editTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editIntent=new Intent(myContext, editTrip.class);
+                editIntent.putExtra("trip",myList.get(position));
+
+                myContext.startActivity(editIntent);
 
             }
         });
