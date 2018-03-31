@@ -173,20 +173,13 @@ public class New_Trip_Activity extends AppCompatActivity {
             return detailedAddress;
         }
     }
-
+    ///////////////////////***********saving trip object***********************////////////////////
     private void saveNewTrip() {
-        String TName = tripName.getText().toString();
-      ///////////////////////**********************************
-
-        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(),0);
-        Long time= calendar.getTimeInMillis();
-        System.out.println("********************************************");
-        System.out.println(calendar.getTime());
-        System.out.println(calendar.getTimeInMillis()/1000);
-        Long unixTime = calendar.getTimeInMillis()/1000 ;
-
 
         Trip trip = new Trip();
+        String TName = tripName.getText().toString();
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(),0);
+        Long unixTime = calendar.getTimeInMillis()/1000 ;
         /// get lat and long from google places autocomplete Api
         trip.setStartLong(fromLatLng.longitude);
         trip.setStartLat(fromLatLng.latitude);
@@ -201,7 +194,6 @@ public class New_Trip_Activity extends AppCompatActivity {
         trip.setNotes(notes);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
             Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
-
         } else {
             Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
             String tripId = myRef.push().getKey();

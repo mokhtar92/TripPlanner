@@ -131,6 +131,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Trip trip=dataSnapshot.getValue(Trip.class);
+                for (int i=0;i<myList.size();i++){
+                    if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())){
+                       myList.set(i,trip);
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                    }
+
+                }
+
+
 
             }
 

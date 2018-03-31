@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +19,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +49,6 @@ import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 public class editTrip extends AppCompatActivity {
     Button saveButton;
-    AutoCompleteTextView tripFrom, tripTo;
     EditText tripName, tripNotes;
     DatePicker datePicker;
     TimePicker timePicker;
@@ -57,54 +62,96 @@ public class editTrip extends AppCompatActivity {
     private ListView notesListView;
     private List<String> notes;
     private Button addNote;
+    String TFrom = "";
+    String TTo ="";
+    LatLng fromLatLng;
+    LatLng toLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trip);
-        mAuth= FirebaseAuth.getInstance();
-        mFirebaseDatabase=FirebaseDatabase.getInstance();
-        myRef=mFirebaseDatabase.getReference();
-        user=mAuth.getCurrentUser();
-        userId=user.getUid();
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        user = mAuth.getCurrentUser();
+        userId = user.getUid();
         Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
 
         addNote = findViewById(R.id.edit_note_button);
         notesListView = findViewById(R.id.edit_note_list_view);
         tripName = findViewById(R.id.edit_tripName);
-        tripFrom = findViewById(R.id.edit_tripFrom);
-        tripTo = findViewById(R.id.edit_tripTo);
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG1", "Place: " + place.getName());
+                TFrom = place.getName().toString();
+                fromLatLng = place.getLatLng();
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG1", "An error occurred: " + status);
+            }
+        });
+        PlaceAutocompleteFragment autocompleteFragment2 = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment2);
+
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG1", "Place: " + place.getName());
+
+                TTo = place.getName().toString();
+                toLatLng = place.getLatLng();
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG1", "An error occurred: " + status);
+            }
+        });
         tripNotes = findViewById(R.id.edit_notes);
         datePicker = findViewById(R.id.edit_datePicker);
         timePicker = findViewById(R.id.edit_timePicker);
-        Intent editIntent=getIntent();
-        trip=new Trip();
-        if (editIntent!=null){
-            trip=(Trip) editIntent.getParcelableExtra("trip");
+        Intent editIntent = getIntent();
+        trip = new Trip();
+        if (editIntent != null) {
+            trip = (Trip) editIntent.getParcelableExtra("trip");
             tripName.setText(trip.getTripName());
-            tripFrom.setText(trip.getStartName());
-            tripTo.setText(trip.getEndName());
+            TFrom=trip.getStartName();
+            autocompleteFragment.setText(TFrom);
+            TTo=trip.getEndName();
+            autocompleteFragment2.setText(TTo);
+            fromLatLng=new LatLng(trip.getStartLat(),trip.getStartLong());
+            toLatLng=new LatLng(trip.getEndLat(),trip.getEndLong());
 
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(Long.parseLong(trip.getTripTime()) * 1000);
+            System.out.println("********************************************");
+            System.out.println(c.getTime());
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
-//            Calendar calendar=Calendar.getInstance();
-//            calendar.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-//            calendar.setTimeInMillis(Long.parseLong(trip.getTripTime())*1000);
-
-            Date date = new Date(Long.parseLong(trip.getTripTime())*1000);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(date);
-//            DateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-//            Toast.makeText(this,  formatter.format(calendar.getTime()), Toast.LENGTH_LONG).show();
-            datePicker.updateDate(calendar.getTime().getYear(),calendar.getTime().getMonth(),calendar.getTime().getDay());
-            timePicker.setCurrentHour(calendar.getTime().getHours());
-            timePicker.setCurrentMinute(calendar.getTime().getMinutes());
-
+            datePicker.updateDate(year, month, day);
+            timePicker.setCurrentHour(c.getTime().getHours());
+            timePicker.setCurrentMinute(c.getTime().getMinutes());
 
 
             notes = trip.getNotes();
 
-            if (notes == null){
-                notes=new ArrayList<>();
+            if (notes == null) {
+                notes = new ArrayList<>();
                 notes.add("No notes to display");
             }
 
@@ -134,75 +181,42 @@ public class editTrip extends AppCompatActivity {
                 }
             });
 
+        }}
+
+
+    private void saveEditingTrip() {
+
+
+        String TName = tripName.getText().toString();
+        trip.setNotes(notes);
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(), 0);
+        Long unixTime = calendar.getTimeInMillis() / 1000;
+        trip.setTripName(TName);
+        trip.setStartName(TFrom);
+        trip.setEndName(TTo);
+        trip.setTripTime(unixTime.toString());
+        /// get lat and long from google places autocomplete Api
+        trip.setStartLong(fromLatLng.longitude);
+        trip.setStartLat(fromLatLng.latitude);
+        trip.setEndLong(toLatLng.longitude);
+        trip.setEndLat(toLatLng.latitude);
+        if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
+            Toast.makeText(editTrip.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+            return;
+
+        } else {
+            Toast.makeText(editTrip.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+            myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+            finish();
         }
 
 
 
-        // create auto complete Adapter
-        LatLngBounds Lat_Lang_bounds = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
-        GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
-
-        PlaceAutocompleteAdapter placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Lat_Lang_bounds, null);
-        tripFrom.setAdapter(placeAutocompleteAdapter);
-        tripTo.setAdapter(placeAutocompleteAdapter);
-
-     //   saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String TName = tripName.getText().toString();
-//                String TFrom = tripFrom.getText().toString();
-//                String TTo = tripTo.getText().toString();
-////                String TNotes = tripNotes.getText().toString();
-//                Trip trip = new Trip();
-//                List noteList = new ArrayList();
-////                noteList.add(TNotes);
-//                Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-//
-//
-//                trip.setStartLong(30.067401);
-//                trip.setStartLat(30.067401);
-//                trip.setEndLat(30.067401);
-//                trip.setEndLong(31.026179);
-//                trip.setTripName(TName);
-//                trip.setStartName(TFrom);
-//                trip.setEndName(TTo);
-//                trip.setNotes(noteList);
-//                if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-//                    Toast.makeText(editTrip.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
-//                    return;
-//
-//                } else {
-//                    Toast.makeText(editTrip.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                String tripId=myRef.push().getKey();
-//                trip.setFireBaseTripId(tripId);
-//                String userId2=new String(userId);
-//                myRef.child("users").child(userId2).child(tripId).setValue(trip);
-//
-//
-//            }
-//
-//        });
     }
 
-    protected Address getLat_Lang(String place) {
-        Geocoder coder = new Geocoder(editTrip.this);
-        List<Address> address;
-        Address location = null;
 
-        try {
-            address = coder.getFromLocationName(place, 5);
 
-            if (address == null) {
 
-            }
-            location = address.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return location;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,6 +230,7 @@ public class editTrip extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 //save action
+                saveEditingTrip();
                 return true;
 
             case R.id.action_cancel:
