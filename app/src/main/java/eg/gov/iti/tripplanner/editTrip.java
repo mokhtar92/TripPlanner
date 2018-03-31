@@ -47,6 +47,8 @@ import java.util.TimeZone;
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.TripManager;
+
 public class editTrip extends AppCompatActivity {
     Button saveButton;
     EditText tripName, tripNotes;
@@ -63,7 +65,7 @@ public class editTrip extends AppCompatActivity {
     private List<String> notes;
     private Button addNote;
     String TFrom = "";
-    String TTo ="";
+    String TTo = "";
     LatLng fromLatLng;
     LatLng toLatLng;
 
@@ -128,12 +130,12 @@ public class editTrip extends AppCompatActivity {
         if (editIntent != null) {
             trip = (Trip) editIntent.getParcelableExtra("trip");
             tripName.setText(trip.getTripName());
-            TFrom=trip.getStartName();
+            TFrom = trip.getStartName();
             autocompleteFragment.setText(TFrom);
-            TTo=trip.getEndName();
+            TTo = trip.getEndName();
             autocompleteFragment2.setText(TTo);
-            fromLatLng=new LatLng(trip.getStartLat(),trip.getStartLong());
-            toLatLng=new LatLng(trip.getEndLat(),trip.getEndLong());
+            fromLatLng = new LatLng(trip.getStartLat(), trip.getStartLong());
+            toLatLng = new LatLng(trip.getEndLat(), trip.getEndLong());
 
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(Long.parseLong(trip.getTripTime()) * 1000);
@@ -181,7 +183,8 @@ public class editTrip extends AppCompatActivity {
                 }
             });
 
-        }}
+        }
+    }
 
 
     private void saveEditingTrip() {
@@ -205,17 +208,20 @@ public class editTrip extends AppCompatActivity {
             return;
 
         } else {
-            Toast.makeText(editTrip.this, "Trip updated successfully!", Toast.LENGTH_SHORT).show();
             myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+            //Set alarm here
+            Intent intent = new Intent(getApplicationContext(), TripReminderActivity.class);
+            intent.putExtra("reminderTrip", trip);
+            int currentTime = (int) (System.currentTimeMillis() / 1000);
+            int timeOfTrip = Integer.parseInt(trip.getTripTime());
+
+            TripManager.scheduleNewTrip(getApplicationContext(), timeOfTrip, intent, timeOfTrip - currentTime);
+            Toast.makeText(editTrip.this, "Trip updated successfully!", Toast.LENGTH_SHORT).show();
             finish();
         }
 
 
-
     }
-
-
-
 
 
     @Override

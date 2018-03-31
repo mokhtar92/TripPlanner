@@ -39,20 +39,12 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:id="@+id/trip_time_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20sp"
-                        tools:text="10:49 am" />
-
-                    <TextView
                         android:id="@+id/trip_name_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:textColor="#FFFFFF"
-                        android:textSize="25sp"
+                        android:textSize="26sp"
                         android:textStyle="bold"
                         tools:text="iTi weekend trip" />
 
@@ -63,6 +55,14 @@
                         android:textColor="#FFFFFF"
                         android:textSize="20sp"
                         tools:text="24 August 2013" />
+
+                    <TextView
+                        android:id="@+id/trip_time_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        tools:text="10:49 am" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -16,12 +16,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import eg.gov.iti.tripplanner.New_Trip_Activity;
 import eg.gov.iti.tripplanner.R;
+import eg.gov.iti.tripplanner.TripReminderActivity;
 import eg.gov.iti.tripplanner.editTrip;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.TripManager;
 
 /**
  * Created by IbrahimDesouky on 3/18/2018.
@@ -41,7 +45,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private FirebaseUser user;
 
 
-
     public interface OnItemClickListener {
         void onItemClicked(int position);
     }
@@ -53,11 +56,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public TripAdapter(Context myContext, ArrayList<Trip> myList) {
         this.myContext = myContext;
         this.myList = myList;
-        mAuth= FirebaseAuth.getInstance();
-        mFirebaseDatabase=FirebaseDatabase.getInstance();
-        myRef=mFirebaseDatabase.getReference();
-        user=mAuth.getCurrentUser();
-        userId=user.getUid();
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        user = mAuth.getCurrentUser();
+        userId = user.getUid();
     }
 
     @Override
@@ -71,9 +74,21 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public void onBindViewHolder(TripViewHolder holder, final int position) {
         final Trip trip = myList.get(position);
+
+        Calendar c = Calendar.getInstance();
+        Long unixTime = Long.parseLong(trip.getTripTime()) * 1000;
+        c.setTimeInMillis(unixTime);
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        String test = sdf.format(unixTime).toString();
+
         holder.tripName.setText(trip.getTripName());
-        holder.tripTime.setText(trip.getTripTime());
-        holder.tripDate.setText(trip.getTripDate());
+        holder.tripTime.setText(test);
+        holder.tripDate.setText(day + "/" + month + "/" + year);
         holder.startName.setText(trip.getStartName());
         holder.endName.setText(trip.getEndName());
         holder.tripImageView.setImageResource(R.drawable.trip);
@@ -89,7 +104,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 removeItem(trip);
 
 
-
                 myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
             }
         });
@@ -97,7 +111,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             @Override
             public void onClick(View v) {
 
-                Uri gmmIntentUri = Uri.parse("google.navigation:q="+myList.get(position).getEndLat()+","+myList.get(position).getEndLong());
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + myList.get(position).getEndLat() + "," + myList.get(position).getEndLong());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 myContext.startActivity(mapIntent);
@@ -108,8 +122,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editIntent=new Intent(myContext, editTrip.class);
-                editIntent.putExtra("trip",myList.get(position));
+                Intent editIntent = new Intent(myContext, editTrip.class);
+                editIntent.putExtra("trip", myList.get(position));
 
                 myContext.startActivity(editIntent);
 
@@ -120,6 +134,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private void removeItem(Trip t) {
         int itemPosition = myList.indexOf(t);
         myList.remove(t);
+
+        //delete Scheduled trip
+        Intent intent = new Intent(myContext, TripReminderActivity.class);
+        int timeOfTrip = Integer.parseInt(t.getTripTime());
+        TripManager.cancelScheduledTrip(myContext, timeOfTrip, intent);
         notifyItemRemoved(itemPosition);
     }
 

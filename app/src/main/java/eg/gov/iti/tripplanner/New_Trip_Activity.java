@@ -199,8 +199,8 @@ public class New_Trip_Activity extends AppCompatActivity {
         trip.setNotes(notes);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
             Toast.makeText(New_Trip_Activity.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
+
         } else {
-            Toast.makeText(New_Trip_Activity.this, "Trip added successfully!", Toast.LENGTH_SHORT).show();
             String tripId = myRef.push().getKey();
             trip.setFireBaseTripId(tripId);
             String userId2 = new String(userId);
@@ -213,20 +213,9 @@ public class New_Trip_Activity extends AppCompatActivity {
             int timeOfTrip = Integer.parseInt(trip.getTripTime());
             TripManager.scheduleNewTrip(getApplicationContext(), timeOfTrip, intent, timeOfTrip - currentTime);
 
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(unixTime * 1000);
-
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            System.out.println("**********************************");
-            System.out.println("unix time = " + unixTime * 1000);
-            System.out.println("return time =" + c.getTime());
+            Toast.makeText(New_Trip_Activity.this, "Trip added successfully!", Toast.LENGTH_SHORT).show();
             finish();
-
         }
-
-
     }
 
     @Override

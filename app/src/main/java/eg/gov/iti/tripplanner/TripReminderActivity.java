@@ -27,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import eg.gov.iti.tripplanner.adapters.ReminderNoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
@@ -59,9 +61,21 @@ public class TripReminderActivity extends AppCompatActivity {
         if (receivedIntent != null) {
             trip = receivedIntent.getParcelableExtra("reminderTrip");
             if (trip != null) {
+
+                Calendar c = Calendar.getInstance();
+                Long unixTime = Long.parseLong(trip.getTripTime()) * 1000;
+                c.setTimeInMillis(unixTime);
+
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH) + 1;
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                String test = sdf.format(unixTime).toString();
+
                 tripName.setText(trip.getTripName());
-                tripTime.setText(trip.getTripTime());
-                tripDate.setText(trip.getTripDate());
+                tripTime.setText(test);
+                tripDate.setText(day + "/" + month + "/" + year);
 
                 ListView notesListView = findViewById(R.id.notes_list_view);
                 ReminderNoteAdapter adapter = new ReminderNoteAdapter(getApplicationContext(), trip.getNotes());

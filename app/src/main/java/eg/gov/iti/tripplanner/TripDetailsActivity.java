@@ -34,18 +34,17 @@ public class TripDetailsActivity extends AppCompatActivity {
             if (trip != null) {
 
                 Calendar c = Calendar.getInstance();
-                Long unixTime=Long.parseLong(trip.getTripTime()) * 1000;
+                Long unixTime = Long.parseLong(trip.getTripTime()) * 1000;
                 c.setTimeInMillis(unixTime);
 
                 int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH)+1;
+                int month = c.get(Calendar.MONTH) + 1;
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
                 String test = sdf.format(unixTime).toString();
 
-                tripDate.setText(day+"/"+month+"/"+year);
-                //tripDate.setText(c.getTime().toString());
+                tripDate.setText(day + "/" + month + "/" + year);
 
                 tripTime.setText(test);
                 tripName.setText(trip.getTripName());

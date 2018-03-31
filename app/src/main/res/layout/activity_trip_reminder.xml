@@ -40,11 +40,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:maxLines="1"
-                    android:paddingTop="10dp"
+                    android:paddingTop="5dp"
                     android:textColor="@color/primary_text"
-                    android:textSize="20sp"
+                    android:textSize="28sp"
                     android:textStyle="bold"
 
                     tools:text="Journey to the earth" />
@@ -54,9 +54,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:textColor="@color/secondary_text"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="Wed March 02 2018" />
 
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/secondary_text"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="10:00 am" />
 
