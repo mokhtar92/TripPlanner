@@ -201,11 +201,11 @@ public class editTrip extends AppCompatActivity {
         trip.setEndLong(toLatLng.longitude);
         trip.setEndLat(toLatLng.latitude);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-            Toast.makeText(editTrip.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(editTrip.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
             return;
 
         } else {
-            Toast.makeText(editTrip.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(editTrip.this, "Trip updated successfully!", Toast.LENGTH_SHORT).show();
             myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
             finish();
         }
