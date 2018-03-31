@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         user=mAuth.getCurrentUser();
+        if (user==null){
+
+            Intent intent=new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         userId=user.getUid();
 
 

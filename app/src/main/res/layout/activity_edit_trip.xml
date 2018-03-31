@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eg.gov.iti.tripplanner.New_Trip_Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_trip_name"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_tripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:ems="10"
+            android:inputType="text"
+            android:selectAllOnFocus="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_from"
+            android:textSize="20sp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/edit_tripFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:ems="10"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_to"
+            android:textSize="20sp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/edit_tripTo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:completionHint="To"
+            android:ems="10"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_trip_type"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/edit_trip_type_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:ems="10"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/edit_single_trip_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/str_radio_btn_single_trip" />
+
+            <RadioButton
+                android:id="@+id/edit_round_trip_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/str_radio_btn_round_trip" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_trip_date"
+            android:textSize="20sp" />
+
+        <DatePicker
+            android:id="@+id/edit_datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:calendarViewShown="false"
+            android:spinnersShown="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/str_trip_time"
+            android:textSize="20sp" />
+
+        <TimePicker
+            android:id="@+id/edit_timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp" />
+
+        <EditText
+            android:id="@+id/edit_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:hint="@string/str_notes"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/editTripButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:text="@string/editTrip" />
+
+    </LinearLayout>
+</ScrollView>
+
