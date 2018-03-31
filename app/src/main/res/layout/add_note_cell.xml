@@ -7,24 +7,20 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/note_text_view"
+        android:id="@+id/add_note_text_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
         android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         tools:text="Going to the hairdresser" />
 
-    <CheckBox
-        android:id="@+id/note_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:buttonTint="@color/colorPrimary"
-        android:clickable="false"
-        android:enabled="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false" />
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_delete_forever_black_48dp" />
 </LinearLayout>

@@ -1,140 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eg.gov.iti.tripplanner.New_Trip_Activity">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        tools:context="eg.gov.iti.tripplanner.TripDetailsActivity">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_trip_name"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/tripName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:selectAllOnFocus="false" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_from"
-            android:textSize="20sp" />
-
-        <AutoCompleteTextView
-            android:id="@+id/tripFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="text" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_to"
-            android:textSize="20sp" />
-
-        <AutoCompleteTextView
-            android:id="@+id/tripTo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            android:completionHint="To"
-            android:ems="10"
-            android:inputType="text" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_trip_type"
-            android:textSize="20sp" />
-
-        <RadioGroup
-            android:id="@+id/trip_type_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/single_trip_radio_btn"
-                android:layout_width="wrap_content"
+            <TextView
+                style="@style/TripDetailsStyleColored"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/str_trip_name" />
+
+            <EditText
+                android:id="@+id/tripName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="text"
+                android:selectAllOnFocus="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TripDetailsStyleColored"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/str_from" />
+
+            <AutoCompleteTextView
+                android:id="@+id/tripFrom"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/str_radio_btn_single_trip" />
+                android:ems="10"
+                android:inputType="text" />
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/round_trip_radio_btn"
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TripDetailsStyleColored"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/str_to" />
+
+            <AutoCompleteTextView
+                android:id="@+id/tripTo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:completionHint="To"
+                android:ems="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TripDetailsStyleColored"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/str_trip_type" />
+
+            <RadioGroup
+                android:id="@+id/trip_type_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/single_trip_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/str_radio_btn_single_trip" />
+
+                <RadioButton
+                    android:id="@+id/round_trip_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_radio_btn_round_trip" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_radio_btn_round_trip" />
+                android:calendarViewShown="false"
+                android:paddingLeft="5dp"
+                android:spinnersShown="true" />
+        </LinearLayout>
 
-        </RadioGroup>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_trip_date"
-            android:textSize="20sp" />
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
 
-        <DatePicker
-            android:id="@+id/datePicker"
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp" />
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="5dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/add_note_button"
+                style="@style/TripDetailsStyleColored"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/str_add_note" />
+
+            <EditText
+                android:id="@+id/notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="center_horizontal"
+                android:inputType="text"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/add_note_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_marginBottom="50dp"
-            android:calendarViewShown="false"
-            android:spinnersShown="true" />
+            android:nestedScrollingEnabled="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/str_trip_time"
-            android:textSize="20sp" />
-
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp" />
-
-        <EditText
-            android:id="@+id/notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:gravity="center_horizontal"
-            android:hint="@string/str_notes"
-            android:inputType="text"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/saveTripButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            android:text="@string/saveTrip" />
-
+        </ListView>
     </LinearLayout>
 </ScrollView>
