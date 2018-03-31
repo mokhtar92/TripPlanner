@@ -48,7 +48,7 @@ import eg.gov.iti.tripplanner.model.Trip;
 
 public class New_Trip_Activity extends AppCompatActivity {
     private Button addNote;
-   // private AutoCompleteTextView tripFrom, tripTo;
+    // private AutoCompleteTextView tripFrom, tripTo;
     private EditText tripName, tripNotes;
     private DatePicker datePicker;
     private TimePicker timePicker;
@@ -62,9 +62,11 @@ public class New_Trip_Activity extends AppCompatActivity {
     private FirebaseUser user;
     private List<String> notes;
     String TFrom = "";
-    String TTo ="";
+    String TTo = "";
     LatLng fromLatLng;
     LatLng toLatLng;
+    Place placeCheckFrom;
+    Place placeCheckTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +84,9 @@ public class New_Trip_Activity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("TAG1", "Place: " + place.getName());
-                TFrom=place.getName().toString();
-                fromLatLng=place.getLatLng();
-
+                TFrom = place.getName().toString();
+                fromLatLng = place.getLatLng();
+                placeCheckFrom = place;
             }
 
             @Override
@@ -102,9 +104,9 @@ public class New_Trip_Activity extends AppCompatActivity {
                 // TODO: Get info about the selected place.
                 Log.i("TAG1", "Place: " + place.getName());
 
-                TTo=place.getName().toString();
-                toLatLng=place.getLatLng();
-
+                TTo = place.getName().toString();
+                toLatLng = place.getLatLng();
+                placeCheckTo = place;
             }
 
             @Override
@@ -173,13 +175,14 @@ public class New_Trip_Activity extends AppCompatActivity {
             return detailedAddress;
         }
     }
+
     ///////////////////////***********saving trip object***********************////////////////////
     private void saveNewTrip() {
 
         Trip trip = new Trip();
         String TName = tripName.getText().toString();
-        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(),0);
-        Long unixTime = calendar.getTimeInMillis()/1000 ;
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(), 0);
+        Long unixTime = calendar.getTimeInMillis() / 1000;
         /// get lat and long from google places autocomplete Api
         trip.setStartLong(fromLatLng.longitude);
         trip.setStartLat(fromLatLng.latitude);
@@ -202,14 +205,14 @@ public class New_Trip_Activity extends AppCompatActivity {
             myRef.child("users").child(userId2).child(tripId).setValue(trip);
 
             Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(unixTime* 1000);
+            c.setTimeInMillis(unixTime * 1000);
 
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             System.out.println("**********************************");
-            System.out.println("unix time = "+unixTime*1000);
-            System.out.println("return time ="+c.getTime());
+            System.out.println("unix time = " + unixTime * 1000);
+            System.out.println("return time =" + c.getTime());
             finish();
 
         }
@@ -228,11 +231,20 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveNewTrip();
-                return true;
+                if (!isNetworkConnected()) {
+                    Toast.makeText(this, "Internet connection is needed!", Toast.LENGTH_SHORT).show();
+
+                } else if (placeCheckFrom == null || placeCheckTo == null) {
+                    Toast.makeText(this, "failed to locate place, try again!", Toast.LENGTH_SHORT).show();
+                    return false;
+
+                } else {
+                    saveNewTrip();
+                    return true;
+                }
 
             case R.id.action_cancel:
-                //cancel action
+                finish();
                 return true;
         }
 
