@@ -113,8 +113,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         }
         if (trip.getTripStatus()!=Definitions.STATUS_UPCOMING){
 
-            //holder.startTrip.setVisibility(View.GONE);
-            holder.startTrip.setClickable(false);
+            holder.startTrip.setVisibility(View.INVISIBLE);
+            //holder.startTrip.setClickable(false);
         }
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
