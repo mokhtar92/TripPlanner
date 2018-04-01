@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import eg.gov.iti.tripplanner.adapters.TripAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.Definitions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,13 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Trip trip = dataSnapshot.getValue(Trip.class);
-                    if (trip.getTripStatus() == 0) {
-                        myList.add(trip);
-                        adapter.notifyDataSetChanged();
-
-                    } else {
+                    if (trip.getTripStatus() == Definitions.STATUS_DONE) {
                         pastTrips.add(trip);
+
                     }
+                    myList.add(trip);
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
