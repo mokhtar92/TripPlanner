@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import eg.gov.iti.tripplanner.adapters.ReminderNoteAdapter;
+import eg.gov.iti.tripplanner.adapters.TripAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 
 public class NoteNotification extends Service {
@@ -36,13 +38,13 @@ public class NoteNotification extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        trip=intent.getParcelableExtra("noteTrip");
+        trip = intent.getParcelableExtra("noteTrip");
         Toast.makeText(this, trip.getTripName(), Toast.LENGTH_SHORT).show();
-        noteList=  trip.getNotes();
-        Log.i("hello","onStartCommand");
-        ListView listView=mFloatingView.findViewById(R.id.list_notes);
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter(this,android . R . layout . simple_list_item_1,noteList);
-        listView.setAdapter(arrayAdapter);
+        noteList = trip.getNotes();
+        Log.i("hello", "onStartCommand");
+        ListView listView = mFloatingView.findViewById(R.id.list_notes);
+        ReminderNoteAdapter adapter = new ReminderNoteAdapter(this, noteList);
+        listView.setAdapter(adapter);
         return super.onStartCommand(intent, flags, startId);
 
     }
