@@ -128,12 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                if (user != null) {
-                    toastMessage("Successfully signed in with: " + user.getEmail());
-
-                } else {
-                    toastMessage("Successfully signed out.");
-                }
             }
         };
 

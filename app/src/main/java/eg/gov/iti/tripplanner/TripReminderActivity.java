@@ -121,6 +121,13 @@ public class TripReminderActivity extends AppCompatActivity {
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
+
+                    Intent notesIntent = new Intent(getApplicationContext(), NoteNotification.class);
+                    notesIntent.putExtra("reminderTrip", trip);
+                    notesIntent.putExtra("noteTrip", trip);
+
+                    getApplicationContext().startService(notesIntent);
+
                     trip.setTripStatus(Definitions.STATUS_DONE);
                     myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
                     finish();

@@ -119,7 +119,6 @@ public class New_Trip_Activity extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
-       // Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
 
         notes = new ArrayList<>();
 
