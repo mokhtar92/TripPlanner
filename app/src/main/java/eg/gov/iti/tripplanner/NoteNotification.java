@@ -37,7 +37,7 @@ public class NoteNotification extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         trip=intent.getParcelableExtra("noteTrip");
-        Toast.makeText(this, trip.getTripName(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, trip.getTripName(), Toast.LENGTH_SHORT).show();
         noteList=  trip.getNotes();
         Log.i("hello","onStartCommand");
         ListView listView=mFloatingView.findViewById(R.id.list_notes);

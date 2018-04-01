@@ -71,7 +71,7 @@ public class editTrip extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
-        Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
+      //  Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
         doneCheckbox= findViewById(R.id.doneCheckbox);
         doneCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

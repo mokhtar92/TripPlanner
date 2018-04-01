@@ -138,7 +138,7 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
                 if (!password.equals(conFirmPass)){
-                    Toast.makeText(getContext(), "Password donot match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Password don't match", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
@@ -147,14 +147,14 @@ public class SignUpFragment extends Fragment {
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(getActivity(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(getActivity(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
 
 // If sign in fails, display a message to the user. If sign in succeeds
 // the auth state listener will be notified and logic to handle the
 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(getActivity(), "Authentication failed." + task.getException(),
+                                       //     Toast.LENGTH_LONG).show();
                                 } else
 
                                 {
