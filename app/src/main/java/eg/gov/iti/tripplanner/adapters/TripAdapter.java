@@ -25,10 +25,12 @@ import java.util.Calendar;
 
 import eg.gov.iti.tripplanner.MainActivity;
 import eg.gov.iti.tripplanner.New_Trip_Activity;
+import eg.gov.iti.tripplanner.NoteNotification;
 import eg.gov.iti.tripplanner.R;
 import eg.gov.iti.tripplanner.TripReminderActivity;
 import eg.gov.iti.tripplanner.editTrip;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
 
 /**
@@ -95,7 +97,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.tripDate.setText(day + "/" + month + "/" + year);
         holder.startName.setText(trip.getStartName());
         holder.endName.setText(trip.getEndName());
-        holder.tripImageView.setImageResource(R.drawable.trip);
+        switch (trip.getTripStatus()) {
+            case Definitions.STATUS_CANCELLED:
+                holder.tripImageView.setImageResource(R.drawable.trip_cancelled);
+                break;
+
+            case Definitions.STATUS_DONE:
+                holder.tripImageView.setImageResource(R.drawable.trip_done);
+                break;
+
+            default:
+                holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
+        }
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +140,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-               // removeItem(trip);
+                // removeItem(trip);
 
 
                 myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
@@ -140,6 +153,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + myList.get(position).getEndLat() + "," + myList.get(position).getEndLong());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
+                Intent notesIntent=new Intent(myContext, NoteNotification.class);
+                notesIntent.putExtra("noteTrip",myList.get(position));
+
+                myContext.startService(notesIntent);
                 myContext.startActivity(mapIntent);
 
             }

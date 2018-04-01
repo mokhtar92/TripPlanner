@@ -112,7 +112,13 @@ public class TripReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (trip != null) {
-                    showNotification(getApplicationContext(), trip.getTripId(), trip.getTripName(), trip.getTripTime());
+                    Calendar c = Calendar.getInstance();
+                    Long unixTime = Long.parseLong(trip.getTripTime()) * 1000;
+                    c.setTimeInMillis(unixTime);
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                    String test = sdf.format(unixTime).toString();
+
+                    showNotification(getApplicationContext(), trip.getTripId(), trip.getTripName(), test);
                 }
                 finish();
             }

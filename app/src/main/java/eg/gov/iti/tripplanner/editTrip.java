@@ -249,6 +249,7 @@ public class editTrip extends AppCompatActivity {
 
             case R.id.action_cancel:
                 //cancel action
+                finish();
                 return true;
         }
 

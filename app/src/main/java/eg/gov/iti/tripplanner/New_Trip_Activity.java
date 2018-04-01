@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import java.util.List;
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
 
 public class New_Trip_Activity extends AppCompatActivity {
@@ -43,6 +45,7 @@ public class New_Trip_Activity extends AppCompatActivity {
     private DatePicker datePicker;
     private TimePicker timePicker;
     private ListView notesListView;
+    private RadioGroup radioGroup;
 
     private DatabaseReference myRef;
     private FirebaseDatabase mFirebaseDatabase;
@@ -65,6 +68,7 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         addNote = findViewById(R.id.add_note_button);
         tripName = findViewById(R.id.tripName);
+        radioGroup = findViewById(R.id.trip_type_radio_group);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -171,6 +175,17 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         Trip trip = new Trip();
         String TName = tripName.getText().toString();
+        trip.setTripStatus(Definitions.STATUS_UPCOMING);
+        switch (radioGroup.getCheckedRadioButtonId()) {
+            case R.id.single_trip_radio_btn:
+                trip.setTripType(Definitions.ONE_WAY_TRIP);
+                break;
+
+            case R.id.round_trip_radio_btn:
+                trip.setTripType(Definitions.ROUND_TRIP);
+                break;
+        }
+
         Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute(), 0);
         Long unixTime = calendar.getTimeInMillis() / 1000;
         /// get lat and long from google places autocomplete Api

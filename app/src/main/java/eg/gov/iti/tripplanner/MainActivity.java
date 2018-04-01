@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TripAdapter adapter;
-    ArrayList<Trip> myList,pastTrips;
+    ArrayList<Trip> myList, pastTrips;
 
     DatabaseReference myRef;
     FirebaseDatabase mFirebaseDatabase;
@@ -45,24 +45,80 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mFirebaseDatabase=FirebaseDatabase.getInstance();
 
-        //mFirebaseDatabase.getReference("users").keepSynced(true);
-        mAuth=FirebaseAuth.getInstance();
+        recyclerView = findViewById(R.id.recyclerView);
+        myList = new ArrayList<>();
+        pastTrips = new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myRef=mFirebaseDatabase.getReference();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
 
-        user=mAuth.getCurrentUser();
-        if (user==null){
+        myRef = mFirebaseDatabase.getReference();
 
-            Intent intent=new Intent(this,LoginActivity.class);
+        user = mAuth.getCurrentUser();
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
-        }
-        userId=user.getUid();
 
+        } else {
+            userId = user.getUid();
+
+            adapter = new TripAdapter(this, myList);
+            recyclerView.setAdapter(adapter);
+            adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClicked(int position) {
+                    Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
+                    intent.putExtra("tripDetails", myList.get(position));
+                    startActivity(intent);
+                }
+            });
+
+            myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Trip trip = dataSnapshot.getValue(Trip.class);
+                    if (trip.getTripStatus() == 0) {
+                        myList.add(trip);
+                        adapter.notifyDataSetChanged();
+
+                    } else {
+                        pastTrips.add(trip);
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Trip trip = dataSnapshot.getValue(Trip.class);
+                    for (int i = 0; i < myList.size(); i++) {
+                        if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())) {
+                            myList.set(i, trip);
+                            adapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
 
@@ -73,24 +129,13 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-
-
-
                     toastMessage("Successfully signed in with: " + user.getEmail());
 
                 } else {
-
-
                     toastMessage("Successfully signed out.");
-
                 }
-
-                // ...
-
             }
-
         };
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -100,75 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addNewTripActivity);
             }
         });
-
-        recyclerView = findViewById(R.id.recyclerView);
-        myList = new ArrayList<>();
-        pastTrips=new ArrayList<>();
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-        adapter = new TripAdapter(this, myList);
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int position) {
-                Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
-                intent.putExtra("tripDetails", myList.get(position));
-                startActivity(intent);
-            }
-        });
-
-        myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Trip trip=dataSnapshot.getValue(Trip.class);
-                if (trip.getTripStatus()==0){
-                    myList.add(trip);
-                    adapter.notifyDataSetChanged();
-                }else{
-                    pastTrips.add(trip);
-                }
-
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Trip trip=dataSnapshot.getValue(Trip.class);
-                for (int i=0;i<myList.size();i++){
-                    if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())){
-                       myList.set(i,trip);
-                        adapter.notifyDataSetChanged();
-                        break;
-
-                    }
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
     }
 
     @Override
@@ -188,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
             Intent startDetailsActivity = new Intent(MainActivity.this, MapsActivity.class);
-            startDetailsActivity.putExtra("pastTrips",pastTrips);
+            startDetailsActivity.putExtra("pastTrips", pastTrips);
             startActivity(startDetailsActivity);
             return true;
         }
@@ -196,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void toastMessage(String message){
+    private void toastMessage(String message) {
 
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
     }
 

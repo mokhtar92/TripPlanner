@@ -51,7 +51,7 @@ public interface OnItemClickListener {
         holder.tripDate.setText(trip.getTripDate());
         holder.startName.setText(trip.getStartName());
         holder.endName.setText(trip.getEndName());
-        holder.tripImageView.setImageResource(R.drawable.trip);
+        holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
     }
 
     private void removeItem(Trip t) {
