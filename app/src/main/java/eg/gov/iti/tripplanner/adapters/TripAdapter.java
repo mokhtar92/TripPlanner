@@ -109,7 +109,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             default:
                 holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
         }
-        holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
