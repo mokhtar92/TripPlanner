@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="5dp"
                     android:maxLines="1"
                     android:paddingTop="5dp"
                     android:textColor="@color/primary_text"
@@ -75,7 +75,6 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="right"
-                    android:paddingTop="5dp"
                     android:src="@drawable/ic_expand_more_black_48dp" />
             </LinearLayout>
         </LinearLayout>
