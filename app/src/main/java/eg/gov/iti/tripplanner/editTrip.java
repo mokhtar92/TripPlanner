@@ -63,6 +63,7 @@ public class editTrip extends AppCompatActivity {
     LatLng toLatLng;
     CheckBox doneCheckbox;
     RadioGroup TTypeRadioGroup;
+    RadioButton singleTripRadioButton,roundtripRadioButton;
     int tripStatus= Definitions.STATUS_UPCOMING;
     int tripType= Definitions.ONE_WAY_TRIP;
 
@@ -94,7 +95,10 @@ public class editTrip extends AppCompatActivity {
         notesListView = findViewById(R.id.edit_note_list_view);
         tripName = findViewById(R.id.edit_tripName);
         TTypeRadioGroup= findViewById(R.id.edit_trip_type_radio_group);
+        singleTripRadioButton=findViewById(R.id.edit_single_trip_radio_btn);
+        roundtripRadioButton=findViewById(R.id.edit_round_trip_radio_btn);
         RadioButton checkedRadioButton = (RadioButton)TTypeRadioGroup.findViewById(TTypeRadioGroup.getCheckedRadioButtonId());
+
         TTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -107,6 +111,8 @@ public class editTrip extends AppCompatActivity {
                 }
             }
         });
+
+
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -172,7 +178,24 @@ public class editTrip extends AppCompatActivity {
             datePicker.updateDate(year, month, day);
             timePicker.setCurrentHour(c.getTime().getHours());
             timePicker.setCurrentMinute(c.getTime().getMinutes());
+            switch (trip.getTripType()) {
+                case Definitions.ONE_WAY_TRIP:
+                    ((RadioButton)TTypeRadioGroup.getChildAt(0)).setChecked(true);
+                    break;
 
+                case Definitions.ROUND_TRIP:
+                    ((RadioButton)TTypeRadioGroup.getChildAt(1)).setChecked(true);
+                    break;
+            }
+            switch (trip.getTripStatus()) {
+                case Definitions.STATUS_DONE:
+                    doneCheckbox.setChecked(true);
+                    break;
+
+                case Definitions.STATUS_UPCOMING:
+                    doneCheckbox.setChecked(false);
+                    break;
+            }
 
             notes = trip.getNotes();
 
