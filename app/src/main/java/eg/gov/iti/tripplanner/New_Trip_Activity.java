@@ -1,12 +1,8 @@
 package eg.gov.iti.tripplanner;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
+import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,28 +18,23 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
-import eg.gov.iti.tripplanner.adapters.PlaceAutocompleteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.TripManager;
 
 public class New_Trip_Activity extends AppCompatActivity {
     private Button addNote;
@@ -196,28 +186,24 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         trip.setNotes(notes);
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-            Toast.makeText(New_Trip_Activity.this, "Some Fields are empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(New_Trip_Activity.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
+
         } else {
-            Toast.makeText(New_Trip_Activity.this, "Trip add successfully!", Toast.LENGTH_SHORT).show();
             String tripId = myRef.push().getKey();
             trip.setFireBaseTripId(tripId);
             String userId2 = new String(userId);
             myRef.child("users").child(userId2).child(tripId).setValue(trip);
 
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(unixTime * 1000);
+            //Set alarm here
+            Intent intent = new Intent(getApplicationContext(), TripReminderActivity.class);
+            intent.putExtra("reminderTrip", trip);
+            int currentTime = (int) (System.currentTimeMillis() / 1000);
+            int timeOfTrip = Integer.parseInt(trip.getTripTime());
+            TripManager.scheduleNewTrip(getApplicationContext(), timeOfTrip, intent, timeOfTrip - currentTime);
 
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            System.out.println("**********************************");
-            System.out.println("unix time = " + unixTime * 1000);
-            System.out.println("return time =" + c.getTime());
+            Toast.makeText(New_Trip_Activity.this, "Trip added successfully!", Toast.LENGTH_SHORT).show();
             finish();
-
         }
-
-
     }
 
     @Override
