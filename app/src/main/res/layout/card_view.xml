@@ -96,6 +96,7 @@
                         android:id="@+id/trip_from_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="17sp"
                         tools:text="Cairo" />
                 </LinearLayout>
@@ -123,6 +124,7 @@
                         android:id="@+id/trip_to_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="17sp"
                         tools:text="Alexandria" />
                 </LinearLayout>
