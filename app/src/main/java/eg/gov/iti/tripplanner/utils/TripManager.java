@@ -18,14 +18,16 @@ public class TripManager {
 
     public static void scheduleNewTrip(Context context, int tripId, Intent intent, int tripTimeInSeconds) {
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, tripTimeInSeconds);
+        if (tripTimeInSeconds > 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.SECOND, tripTimeInSeconds);
 
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(context, tripId, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        AlarmManager manager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-        manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+            AlarmManager manager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+            manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        }
     }
 
 
