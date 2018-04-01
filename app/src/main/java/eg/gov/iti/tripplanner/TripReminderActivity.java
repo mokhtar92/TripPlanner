@@ -26,12 +26,18 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import eg.gov.iti.tripplanner.adapters.ReminderNoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.Definitions;
 
 public class TripReminderActivity extends AppCompatActivity {
 
@@ -39,12 +45,24 @@ public class TripReminderActivity extends AppCompatActivity {
     private Trip trip;
     private static boolean isFirstTime = true;
 
+    private DatabaseReference myRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private String userId;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_trip_reminder);
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        user = mAuth.getCurrentUser();
+        userId = user.getUid();
 
         TextView tripName = findViewById(R.id.reminder_trip_name_text_field);
         TextView tripDate = findViewById(R.id.reminder_trip_date_text_field);
@@ -103,6 +121,8 @@ public class TripReminderActivity extends AppCompatActivity {
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
+                    trip.setTripStatus(Definitions.STATUS_DONE);
+                    myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
                     finish();
                 }
             }
@@ -130,6 +150,8 @@ public class TripReminderActivity extends AppCompatActivity {
                 if (mMediaPlayer != null) {
                     mMediaPlayer.stop();
                 }
+                trip.setTripStatus(Definitions.STATUS_CANCELLED);
+                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
                 finish();
             }
         });
