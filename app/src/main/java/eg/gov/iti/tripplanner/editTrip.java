@@ -181,13 +181,19 @@ public class editTrip extends AppCompatActivity {
             switch (trip.getTripType()) {
                 case Definitions.ONE_WAY_TRIP:
                     ((RadioButton)TTypeRadioGroup.getChildAt(0)).setChecked(true);
-                    Toast.makeText(this,((RadioButton)TTypeRadioGroup.getChildAt(0)).getText(), Toast.LENGTH_LONG).show();
                     break;
 
                 case Definitions.ROUND_TRIP:
                     ((RadioButton)TTypeRadioGroup.getChildAt(1)).setChecked(true);
-                    Toast.makeText(this,((RadioButton)TTypeRadioGroup.getChildAt(1)).getText(), Toast.LENGTH_LONG).show();
+                    break;
+            }
+            switch (trip.getTripStatus()) {
+                case Definitions.STATUS_DONE:
+                    doneCheckbox.setChecked(true);
+                    break;
 
+                case Definitions.STATUS_UPCOMING:
+                    doneCheckbox.setChecked(false);
                     break;
             }
 
