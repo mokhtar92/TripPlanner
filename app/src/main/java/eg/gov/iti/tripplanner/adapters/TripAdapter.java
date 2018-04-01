@@ -150,14 +150,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             @Override
             public void onClick(View v) {
 
+
+
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + myList.get(position).getEndLat() + "," + myList.get(position).getEndLong());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
+                myContext.startActivity(mapIntent);
+
                 Intent notesIntent=new Intent(myContext, NoteNotification.class);
                 notesIntent.putExtra("noteTrip",myList.get(position));
 
                 myContext.startService(notesIntent);
-                myContext.startActivity(mapIntent);
+
+
 
             }
         });
@@ -224,4 +229,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             });
         }
     }
+
+
+
 }
