@@ -31,5 +31,8 @@
     <string name="str_trip_type">Trip Type</string>
     <string name="str_trip_notes">Trip Notes</string>
     <string name="str_add_note">Add Note</string>
+    <string name="tripStatus">Trip Status</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="Done">Done</string>
     <!-- Shimaa END -->
 </resources>

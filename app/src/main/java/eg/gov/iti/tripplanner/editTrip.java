@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
+import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
 
 public class editTrip extends AppCompatActivity {
@@ -56,6 +59,8 @@ public class editTrip extends AppCompatActivity {
     String TTo = "";
     LatLng fromLatLng;
     LatLng toLatLng;
+    CheckBox doneCheckbox;
+    int tripStatus= Definitions.STATUS_UPCOMING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,20 @@ public class editTrip extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         userId = user.getUid();
         Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
+        doneCheckbox= findViewById(R.id.doneCheckbox);
+        doneCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                   tripStatus=Definitions.STATUS_DONE;
+                    Log.i("TAG1", "status : " + tripStatus);
 
+                }
+                else {
+                   tripStatus=Definitions.STATUS_UPCOMING;
+                }
+            }
+        });
         addNote = findViewById(R.id.edit_note_button);
         notesListView = findViewById(R.id.edit_note_list_view);
         tripName = findViewById(R.id.edit_tripName);
@@ -191,6 +209,8 @@ public class editTrip extends AppCompatActivity {
         trip.setStartLat(fromLatLng.latitude);
         trip.setEndLong(toLatLng.longitude);
         trip.setEndLat(toLatLng.latitude);
+        trip.setTripStatus(tripStatus);
+
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
             Toast.makeText(editTrip.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
             return;

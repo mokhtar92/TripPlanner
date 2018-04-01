@@ -143,6 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+
     }
 
 
@@ -312,9 +313,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             if (polylineOptions != null){
-                mMap.setMinZoomPreference(6.0f);
-                mMap.setMaxZoomPreference(14.0f);
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(	31.205753, 29.924526), 10);
+                mMap.setMinZoomPreference(3.0f);
+                mMap.setMaxZoomPreference(10.0f);
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(	31.205753, 29.924526), 5);
+
                 mMap.animateCamera(cameraUpdate);
 
                 mMap.addPolyline(polylineOptions);
