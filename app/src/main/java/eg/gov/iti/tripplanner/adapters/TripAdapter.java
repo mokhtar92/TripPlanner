@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 import eg.gov.iti.tripplanner.New_Trip_Activity;
+import eg.gov.iti.tripplanner.NoteNotification;
 import eg.gov.iti.tripplanner.R;
 import eg.gov.iti.tripplanner.editTrip;
 import eg.gov.iti.tripplanner.model.Trip;
@@ -100,6 +101,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 Uri gmmIntentUri = Uri.parse("google.navigation:q="+myList.get(position).getEndLat()+","+myList.get(position).getEndLong());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
+                Intent notesIntent=new Intent(myContext, NoteNotification.class);
+                notesIntent.putExtra("noteTrip",myList.get(position));
+
+                myContext.startService(notesIntent);
                 myContext.startActivity(mapIntent);
 
             }
