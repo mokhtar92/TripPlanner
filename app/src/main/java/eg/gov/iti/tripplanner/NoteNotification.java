@@ -45,6 +45,7 @@ public class NoteNotification extends Service {
         ListView listView = mFloatingView.findViewById(R.id.list_notes);
         ReminderNoteAdapter adapter = new ReminderNoteAdapter(this, noteList);
         listView.setAdapter(adapter);
+
         return super.onStartCommand(intent, flags, startId);
 
     }

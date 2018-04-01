@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
                 enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getActivity(), connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
@@ -200,7 +200,7 @@ public class LoginFragment extends Fragment {
                 firebaseAuthWithGoogle(account);
             }else {
 
-                Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
 
 //            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -226,7 +226,7 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(getActivity(), "trueeeeeeeee", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), "trueeeeeeeee", Toast.LENGTH_SHORT).show();
                             String userId=user.getUid();
                             Intent intent=new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("userId",userId);
@@ -238,7 +238,7 @@ public class LoginFragment extends Fragment {
                             // If sign in fails, display a message to the user.
 
                             Log.w("tag", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
