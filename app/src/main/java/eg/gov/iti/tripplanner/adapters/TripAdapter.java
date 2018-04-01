@@ -149,7 +149,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Trip trip=myList.get(position);
+                trip.setTripStatus(Definitions.STATUS_DONE);
+                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
 
 
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + myList.get(position).getEndLat() + "," + myList.get(position).getEndLong());
@@ -161,7 +163,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 notesIntent.putExtra("noteTrip",myList.get(position));
 
                 myContext.startService(notesIntent);
-
 
 
             }
