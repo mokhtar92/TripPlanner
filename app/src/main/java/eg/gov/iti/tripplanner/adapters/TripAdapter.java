@@ -1,8 +1,11 @@
 package eg.gov.iti.tripplanner.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import eg.gov.iti.tripplanner.MainActivity;
 import eg.gov.iti.tripplanner.New_Trip_Activity;
 import eg.gov.iti.tripplanner.R;
 import eg.gov.iti.tripplanner.TripReminderActivity;
@@ -101,7 +105,29 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.deleteTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeItem(trip);
+
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(myContext, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(myContext);
+                }
+                builder.setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this Trip?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                removeItem(trip);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+               // removeItem(trip);
 
 
                 myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
