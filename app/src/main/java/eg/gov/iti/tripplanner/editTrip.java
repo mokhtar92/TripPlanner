@@ -16,6 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -60,7 +62,9 @@ public class editTrip extends AppCompatActivity {
     LatLng fromLatLng;
     LatLng toLatLng;
     CheckBox doneCheckbox;
+    RadioGroup TTypeRadioGroup;
     int tripStatus= Definitions.STATUS_UPCOMING;
+    int tripType= Definitions.ONE_WAY_TRIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +93,20 @@ public class editTrip extends AppCompatActivity {
         addNote = findViewById(R.id.edit_note_button);
         notesListView = findViewById(R.id.edit_note_list_view);
         tripName = findViewById(R.id.edit_tripName);
+        TTypeRadioGroup= findViewById(R.id.edit_trip_type_radio_group);
+        RadioButton checkedRadioButton = (RadioButton)TTypeRadioGroup.findViewById(TTypeRadioGroup.getCheckedRadioButtonId());
+        TTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                String RadioText= checkedRadioButton.getText().toString();
+                if (RadioText.equals(R.string.str_radio_btn_single_trip)){
+                    tripType=Definitions.ONE_WAY_TRIP;
+                }else{
+                    tripType=Definitions.ROUND_TRIP;
+                }
+            }
+        });
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -210,6 +228,7 @@ public class editTrip extends AppCompatActivity {
         trip.setEndLong(toLatLng.longitude);
         trip.setEndLat(toLatLng.latitude);
         trip.setTripStatus(tripStatus);
+        trip.setTripType(tripType);
 
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
             Toast.makeText(editTrip.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
