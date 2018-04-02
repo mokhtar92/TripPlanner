@@ -66,73 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
-//        mFirebaseDatabase= FirebaseDatabase.getInstance();
-//
-//        //mFirebaseDatabase.getReference("users").keepSynced(true);
-//        mAuth= FirebaseAuth.getInstance();
-//
-//        myRef=mFirebaseDatabase.getReference();
-//
-//
-//        user=mAuth.getCurrentUser();
-//
-//        userId=user.getUid();
-//
-//        tripsPast = new ArrayList<Trip>();
-//
-//        myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Trip trip=dataSnapshot.getValue(Trip.class);
-//                if (trip.getTripStatus()==1){
-//                    tripsPast.add(trip);
-//                    Toast.makeText(MapsActivity.this, "hello", Toast.LENGTH_SHORT).show();
-//                    // mMap.wait();
-//
-//                }
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                Trip trip=dataSnapshot.getValue(Trip.class);
-//                if (trip.getTripStatus()==1){
-//
-//                    tripsPast.add(trip);
-//
-//                }
-////                for (int i=0;i<tripsPast.size();i++){
-////                    if (trip.getFireBaseTripId().equals(tripsPast.get(i).getFireBaseTripId())){
-////                        tripsPast.set(i,trip);
-////
-////                        break;
-////
-////                    }
-//
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
 
 
         mapFragment.getMapAsync(this);
