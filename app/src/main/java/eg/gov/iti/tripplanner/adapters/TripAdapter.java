@@ -100,28 +100,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         switch (trip.getTripStatus()) {
             case Definitions.STATUS_CANCELLED:
                 holder.tripImageView.setImageResource(R.drawable.trip_cancelled);
+                holder.startTrip.setVisibility(View.INVISIBLE);
                 break;
 
             case Definitions.STATUS_DONE:
                 holder.tripImageView.setImageResource(R.drawable.trip_done);
+                holder.startTrip.setVisibility(View.INVISIBLE);
                 break;
 
             default:
                 holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
-
-
         }
-        if (trip.getTripStatus()!=Definitions.STATUS_UPCOMING){
 
-            holder.startTrip.setVisibility(View.INVISIBLE);
-            //holder.startTrip.setClickable(false);
-        }
-        holder.editTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Goto AddTripActivity in Edit Mode
-            }
-        });
         holder.deleteTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
