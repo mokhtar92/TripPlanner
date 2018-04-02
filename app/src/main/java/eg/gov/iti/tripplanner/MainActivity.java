@@ -1,7 +1,9 @@
 package eg.gov.iti.tripplanner;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     Trip trip = dataSnapshot.getValue(Trip.class);
                     if (trip.getTripStatus() == Definitions.STATUS_DONE) {
                         pastTrips.add(trip);
+                        Toast.makeText(MainActivity.this, trip.getTripName(), Toast.LENGTH_SHORT).show();
 
                     }
                     myList.add(trip);
@@ -167,13 +170,25 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
+            //Toast.makeText(this, pastTrips.size()+"", Toast.LENGTH_SHORT).show();
+            if (!isNetworkConnected()) {
+                Toast.makeText(this, "Internet connection is needed!", Toast.LENGTH_SHORT).show();
+
+            }
+
             Intent startDetailsActivity = new Intent(MainActivity.this, MapsActivity.class);
             startDetailsActivity.putExtra("pastTrips", pastTrips);
             startActivity(startDetailsActivity);
-            return true;
+            //return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
     private void toastMessage(String message) {
