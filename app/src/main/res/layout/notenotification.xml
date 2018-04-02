@@ -59,7 +59,7 @@
             android:background="@drawable/circle_background_light"
             android:orientation="horizontal"
             android:padding="8dp"
-            android:visibility="invisible">
+            android:visibility="gone">
              
                         <!--Album image for the song currently playing.-->
                        
