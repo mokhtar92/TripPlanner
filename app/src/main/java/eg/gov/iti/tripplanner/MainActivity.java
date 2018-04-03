@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     Trip trip = dataSnapshot.getValue(Trip.class);
                     if (trip.getTripStatus() == Definitions.STATUS_DONE) {
                         pastTrips.add(trip);
-                        Toast.makeText(MainActivity.this, trip.getTripName(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, trip.getTripName(), Toast.LENGTH_SHORT).show();
 
                     }
                     myList.add(trip);
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
-            Toast.makeText(this, "granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
         }
     }
 

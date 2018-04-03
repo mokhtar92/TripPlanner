@@ -28,4 +28,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
+    public static void setFirstTimeFalse(){
+        isFirstTime = false;
+    }
 }

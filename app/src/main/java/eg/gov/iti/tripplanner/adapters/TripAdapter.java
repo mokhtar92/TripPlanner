@@ -92,25 +92,29 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
         String test = sdf.format(unixTime).toString();
 
-        holder.tripName.setText(trip.getTripName());
-        holder.tripTime.setText(test);
-        holder.tripDate.setText(day + "/" + month + "/" + year);
-        holder.startName.setText(trip.getStartName());
-        holder.endName.setText(trip.getEndName());
+
         switch (trip.getTripStatus()) {
             case Definitions.STATUS_CANCELLED:
                 holder.tripImageView.setImageResource(R.drawable.trip_cancelled);
                 holder.startTrip.setVisibility(View.INVISIBLE);
+                holder.editTrip.setVisibility(View.INVISIBLE);
                 break;
 
             case Definitions.STATUS_DONE:
                 holder.tripImageView.setImageResource(R.drawable.trip_done);
                 holder.startTrip.setVisibility(View.INVISIBLE);
+                holder.editTrip.setVisibility(View.INVISIBLE);
                 break;
 
-            default:
+            case Definitions.STATUS_UPCOMING:
                 holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
         }
+        holder.tripName.setText(trip.getTripName());
+        holder.tripTime.setText(test);
+        holder.tripDate.setText(day + "/" + month + "/" + year);
+        holder.startName.setText(trip.getStartName());
+        holder.endName.setText(trip.getEndName());
+
 
         holder.deleteTrip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +150,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Trip trip=myList.get(position);
+                Trip trip = myList.get(position);
                 trip.setTripStatus(Definitions.STATUS_DONE);
                 myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
 
@@ -156,8 +160,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 mapIntent.setPackage("com.google.android.apps.maps");
                 myContext.startActivity(mapIntent);
 
-                Intent notesIntent=new Intent(myContext, NoteNotification.class);
-                notesIntent.putExtra("noteTrip",myList.get(position));
+                Intent notesIntent = new Intent(myContext, NoteNotification.class);
+                notesIntent.putExtra("noteTrip", myList.get(position));
 
                 myContext.startService(notesIntent);
 
@@ -227,7 +231,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             });
         }
     }
-
 
 
 }
