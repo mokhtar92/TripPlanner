@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+import eg.gov.iti.tripplanner.utils.Definitions;
+
 /**
  * Created by IbrahimDesouky on 3/18/2018.
  */
@@ -16,7 +18,7 @@ public class Trip implements Parcelable {
 
     private String tripName;
     private int tripId;
-    private int tripStatus;
+    private int tripStatus = Definitions.STATUS_UPCOMING;
     private int tripType;
 
     private String startName;

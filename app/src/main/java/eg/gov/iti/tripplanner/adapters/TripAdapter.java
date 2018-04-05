@@ -28,6 +28,7 @@ import eg.gov.iti.tripplanner.New_Trip_Activity;
 import eg.gov.iti.tripplanner.NoteNotification;
 import eg.gov.iti.tripplanner.R;
 import eg.gov.iti.tripplanner.TripReminderActivity;
+import eg.gov.iti.tripplanner.data.TripDbAdapter;
 import eg.gov.iti.tripplanner.editTrip;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
@@ -132,6 +133,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 removeItem(trip);
+                                TripDbAdapter dbAdapter = new TripDbAdapter(myContext);
+                                dbAdapter.deleteTrip(trip);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

@@ -174,7 +174,6 @@ public class New_Trip_Activity extends AppCompatActivity {
 
         Trip trip = new Trip();
         String TName = tripName.getText().toString();
-        trip.setTripStatus(Definitions.STATUS_UPCOMING);
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.single_trip_radio_btn:
                 trip.setTripType(Definitions.ONE_WAY_TRIP);
@@ -240,6 +239,7 @@ public class New_Trip_Activity extends AppCompatActivity {
 
                 } else {
                     saveNewTrip();
+                    notifyAll();
                     return true;
                 }
 

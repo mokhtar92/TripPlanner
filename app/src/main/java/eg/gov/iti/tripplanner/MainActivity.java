@@ -28,24 +28,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import eg.gov.iti.tripplanner.adapters.TripAdapter;
+import eg.gov.iti.tripplanner.data.TripDbAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    TripAdapter adapter;
-    ArrayList<Trip> myList, pastTrips;
+    private RecyclerView recyclerView;
+    private TripAdapter adapter;
+    private ArrayList<Trip> myList, pastTrips;
+    private TripDbAdapter dbAdapter;
 
-    DatabaseReference myRef;
-    FirebaseDatabase mFirebaseDatabase;
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private String userId;
-    FirebaseUser user;
-    public final static int REQUEST_CODE = 10101;
+    private FirebaseUser user;
 
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //checkDrawOverlayPermission();
         checkPermission();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         pastTrips = new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        dbAdapter = new TripDbAdapter(this);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -97,10 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     Trip trip = dataSnapshot.getValue(Trip.class);
                     if (trip.getTripStatus() == Definitions.STATUS_DONE) {
                         pastTrips.add(trip);
-//                        Toast.makeText(MainActivity.this, trip.getTripName(), Toast.LENGTH_SHORT).show();
-
                     }
                     myList.add(trip);
+                    dbAdapter.insertOrUpdate(trip);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < myList.size(); i++) {
                         if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())) {
                             myList.set(i, trip);
+                            dbAdapter.insertOrUpdate(trip);
                             adapter.notifyDataSetChanged();
                             break;
                         }
@@ -237,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void checkPermission(){
+    private void checkPermission() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             //If the draw over permission is not available open the settings screen
