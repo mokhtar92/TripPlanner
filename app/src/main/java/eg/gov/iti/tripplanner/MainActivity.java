@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eg.gov.iti.tripplanner.adapters.TripAdapter;
+import eg.gov.iti.tripplanner.data.FirebaseHelper;
 import eg.gov.iti.tripplanner.data.TripDbAdapter;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Trip> myList, pastTrips;
     private TripDbAdapter dbAdapter;
 
-    private DatabaseReference myRef;
-    private FirebaseDatabase mFirebaseDatabase;
+//    private DatabaseReference myRef;
+//    private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String userId;
@@ -57,7 +58,52 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        userId=user.getUid();
+        dbAdapter = new TripDbAdapter(this);
+        FirebaseHelper.getInstance().getFirebaseRefrence().child("users").child(userId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Trip trip = dataSnapshot.getValue(Trip.class);
+                if (trip.getTripStatus() == Definitions.STATUS_DONE) {
+                    pastTrips.add(trip);
+                }
+                myList.add(trip);
+                dbAdapter.insertOrUpdate(trip);
+                adapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Trip trip = dataSnapshot.getValue(Trip.class);
+                for (int i = 0; i < myList.size(); i++) {
+                    if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())) {
+                        myList.set(i, trip);
+                        dbAdapter.insertOrUpdate(trip);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //checkDrawOverlayPermission();
         checkPermission();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -66,75 +112,25 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        dbAdapter = new TripDbAdapter(this);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
 
-        myRef = mFirebaseDatabase.getReference();
 
-        user = mAuth.getCurrentUser();
-        if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+        userId = user.getUid();
 
-        } else {
-            userId = user.getUid();
+        adapter = new TripAdapter(this, myList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
+                intent.putExtra("tripDetails", myList.get(position));
+                startActivity(intent);
+            }
+        });
 
-            adapter = new TripAdapter(this, myList);
-            recyclerView.setAdapter(adapter);
-            adapter.setOnItemClickListener(new TripAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClicked(int position) {
-                    Intent intent = new Intent(MainActivity.this, TripDetailsActivity.class);
-                    intent.putExtra("tripDetails", myList.get(position));
-                    startActivity(intent);
-                }
-            });
 
-            myRef.child("users").child(userId).addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Trip trip = dataSnapshot.getValue(Trip.class);
-                    if (trip.getTripStatus() == Definitions.STATUS_DONE) {
-                        pastTrips.add(trip);
-                    }
-                    myList.add(trip);
-                    dbAdapter.insertOrUpdate(trip);
-                    adapter.notifyDataSetChanged();
-                }
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Trip trip = dataSnapshot.getValue(Trip.class);
-                    for (int i = 0; i < myList.size(); i++) {
-                        if (trip.getFireBaseTripId().equals(myList.get(i).getFireBaseTripId())) {
-                            myList.set(i, trip);
-                            dbAdapter.insertOrUpdate(trip);
-                            adapter.notifyDataSetChanged();
-                            break;
-                        }
-                    }
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
 

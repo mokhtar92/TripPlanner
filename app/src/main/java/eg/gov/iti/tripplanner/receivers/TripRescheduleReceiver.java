@@ -18,14 +18,15 @@ public class TripRescheduleReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
 
         String action = intent.getAction();
+        Toast.makeText(context, "function begin", Toast.LENGTH_SHORT).show();
         if (action != null) {
-
-            Toast.makeText(context, "Reboot Detected", Toast.LENGTH_LONG).show();
             TripDbAdapter dbAdapter = new TripDbAdapter(context);
             List<Trip> trips = dbAdapter.getUpcomingTrips();
+            Toast.makeText(context, "inside if", Toast.LENGTH_SHORT).show();
 
             for (Trip trip : trips) {
                 //Set alarm here
+                Toast.makeText(context, trip.getTripName(), Toast.LENGTH_SHORT).show();
                 Intent alarmIntent = new Intent(context, TripReminderActivity.class);
                 alarmIntent.putExtra("reminderTrip", trip);
                 int currentTime = (int) (System.currentTimeMillis() / 1000);

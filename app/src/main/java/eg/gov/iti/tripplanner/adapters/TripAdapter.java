@@ -23,13 +23,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import eg.gov.iti.tripplanner.MainActivity;
-import eg.gov.iti.tripplanner.New_Trip_Activity;
 import eg.gov.iti.tripplanner.NoteNotification;
 import eg.gov.iti.tripplanner.R;
 import eg.gov.iti.tripplanner.TripReminderActivity;
+import eg.gov.iti.tripplanner.data.FirebaseHelper;
 import eg.gov.iti.tripplanner.data.TripDbAdapter;
-import eg.gov.iti.tripplanner.editTrip;
+import eg.gov.iti.tripplanner.EditTrip;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
@@ -64,8 +63,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         this.myContext = myContext;
         this.myList = myList;
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        //mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
     }
@@ -95,6 +94,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
 
         switch (trip.getTripStatus()) {
+
+            case Definitions.STATUS_UPCOMING:
+                holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
+                break;
+
             case Definitions.STATUS_CANCELLED:
                 holder.tripImageView.setImageResource(R.drawable.trip_cancelled);
                 holder.startTrip.setVisibility(View.INVISIBLE);
@@ -107,8 +111,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 holder.editTrip.setVisibility(View.INVISIBLE);
                 break;
 
-            case Definitions.STATUS_UPCOMING:
-                holder.tripImageView.setImageResource(R.drawable.trip_upcoming);
+
         }
         holder.tripName.setText(trip.getTripName());
         holder.tripTime.setText(test);
@@ -144,10 +147,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-                // removeItem(trip);
 
 
-                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
+
+               // myRef.child("users").child(userId).child(trip.getFireBaseTripId()).removeValue();
+
+                FirebaseHelper.getInstance().deleteTrip(trip,userId);
             }
         });
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +160,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             public void onClick(View v) {
                 Trip trip = myList.get(position);
                 trip.setTripStatus(Definitions.STATUS_DONE);
-                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+               // myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+                FirebaseHelper.getInstance().updateTrip(trip,userId);
 
 
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + myList.get(position).getEndLat() + "," + myList.get(position).getEndLong());
@@ -175,7 +181,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editIntent = new Intent(myContext, editTrip.class);
+                Intent editIntent = new Intent(myContext, EditTrip.class);
                 editIntent.putExtra("trip", myList.get(position));
 
                 myContext.startActivity(editIntent);

@@ -96,7 +96,7 @@
         </activity>
 
         <activity
-            android:name=".editTrip"
+            android:name=".EditTrip"
             android:screenOrientation="portrait">
         </activity>
 

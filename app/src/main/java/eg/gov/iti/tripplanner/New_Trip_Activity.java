@@ -34,6 +34,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
+import eg.gov.iti.tripplanner.data.FirebaseHelper;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
@@ -47,8 +48,9 @@ public class New_Trip_Activity extends AppCompatActivity {
     private ListView notesListView;
     private RadioGroup radioGroup;
 
-    private DatabaseReference myRef;
-    private FirebaseDatabase mFirebaseDatabase;
+
+//    private DatabaseReference myRef;
+//    private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String userId;
@@ -115,8 +117,8 @@ public class New_Trip_Activity extends AppCompatActivity {
         notesListView = findViewById(R.id.add_note_list_view);
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+//        mFirebaseDatabase = FirebaseDatabase.getInstance();
+//        myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
 
@@ -202,10 +204,12 @@ public class New_Trip_Activity extends AppCompatActivity {
             Toast.makeText(New_Trip_Activity.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
 
         } else {
-            String tripId = myRef.push().getKey();
-            trip.setFireBaseTripId(tripId);
-            String userId2 = new String(userId);
-            myRef.child("users").child(userId2).child(tripId).setValue(trip);
+//            String tripId = myRef.push().getKey();
+//            trip.setFireBaseTripId(tripId);
+//            String userId2 = new String(userId);
+//            myRef.child("users").child(userId2).child(tripId).setValue(trip);
+
+            FirebaseHelper.getInstance().addTrip(trip,userId);
 
             //Set alarm here
             Intent intent = new Intent(getApplicationContext(), TripReminderActivity.class);
@@ -239,7 +243,6 @@ public class New_Trip_Activity extends AppCompatActivity {
 
                 } else {
                     saveNewTrip();
-                    notifyAll();
                     return true;
                 }
 

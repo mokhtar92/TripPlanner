@@ -51,12 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PolylineOptions polylineOptions = null;
     ArrayList<Trip> tripsPast = null;
 
-    DatabaseReference myRef;
-    FirebaseDatabase mFirebaseDatabase;
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
-    private String userId;
-    FirebaseUser user;
+//    DatabaseReference myRef;
+//    FirebaseDatabase mFirebaseDatabase;
+//    FirebaseAuth mAuth;
+//    FirebaseAuth.AuthStateListener mAuthListener;
+//    private String userId;
+//    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

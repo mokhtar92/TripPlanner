@@ -38,11 +38,12 @@ import java.util.List;
 
 
 import eg.gov.iti.tripplanner.adapters.AddNoteAdapter;
+import eg.gov.iti.tripplanner.data.FirebaseHelper;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
 import eg.gov.iti.tripplanner.utils.TripManager;
 
-public class editTrip extends AppCompatActivity {
+public class EditTrip extends AppCompatActivity {
     Button saveButton;
     EditText tripName, tripNotes;
     DatePicker datePicker;
@@ -72,8 +73,8 @@ public class editTrip extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trip);
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        //mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
       //  Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
@@ -225,7 +226,7 @@ public class editTrip extends AppCompatActivity {
                         noteAdapter.notifyDataSetChanged();
 
                     } else {
-                        Toast.makeText(editTrip.this, "Can't add empty note", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditTrip.this, "Can't add empty note", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -254,11 +255,12 @@ public class editTrip extends AppCompatActivity {
         trip.setTripType(tripType);
 
         if (TName.isEmpty() || TFrom.isEmpty() || TTo.isEmpty()) {
-            Toast.makeText(editTrip.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditTrip.this, "Some fields are empty!", Toast.LENGTH_SHORT).show();
             return;
 
         } else {
-            myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+            //myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+            FirebaseHelper.getInstance().updateTrip(trip,userId);
             //Set alarm here
             Intent intent = new Intent(getApplicationContext(), TripReminderActivity.class);
             intent.putExtra("reminderTrip", trip);
@@ -266,7 +268,7 @@ public class editTrip extends AppCompatActivity {
             int timeOfTrip = Integer.parseInt(trip.getTripTime());
 
             TripManager.scheduleNewTrip(getApplicationContext(), timeOfTrip, intent, timeOfTrip - currentTime);
-            Toast.makeText(editTrip.this, "Trip updated successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditTrip.this, "Trip updated successfully!", Toast.LENGTH_SHORT).show();
             finish();
         }
 

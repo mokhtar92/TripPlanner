@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import eg.gov.iti.tripplanner.adapters.ReminderNoteAdapter;
+import eg.gov.iti.tripplanner.data.FirebaseHelper;
 import eg.gov.iti.tripplanner.model.Trip;
 import eg.gov.iti.tripplanner.utils.Definitions;
 
@@ -43,7 +44,6 @@ public class TripReminderActivity extends AppCompatActivity {
 
     private MediaPlayer mMediaPlayer;
     private Trip trip;
-    private static boolean isFirstTime = true;
 
     private DatabaseReference myRef;
     private FirebaseDatabase mFirebaseDatabase;
@@ -58,16 +58,16 @@ public class TripReminderActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_trip_reminder);
 
-        SplashActivity.setFirstTimeFalse();
+        //SplashActivity.setFirstTimeFalse();
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+//        mFirebaseDatabase = FirebaseDatabase.getInstance();
+//        myRef = mFirebaseDatabase.getReference();
         user = mAuth.getCurrentUser();
         userId = user.getUid();
 
         TextView tripName = findViewById(R.id.reminder_trip_name_text_field);
-        TextView tripDate = findViewById(R.id.reminder_trip_date_text_field);
+        final TextView tripDate = findViewById(R.id.reminder_trip_date_text_field);
         TextView tripTime = findViewById(R.id.reminder_trip_time_text_field);
 
         ImageView startTripImageView = findViewById(R.id.reminder_start_trip_image_view);
@@ -131,7 +131,8 @@ public class TripReminderActivity extends AppCompatActivity {
                     getApplicationContext().startService(notesIntent);
 
                     trip.setTripStatus(Definitions.STATUS_DONE);
-                    myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+                    //myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+                    FirebaseHelper.getInstance().updateTrip(trip, userId);
                     finish();
                 }
             }
@@ -160,7 +161,8 @@ public class TripReminderActivity extends AppCompatActivity {
                     mMediaPlayer.stop();
                 }
                 trip.setTripStatus(Definitions.STATUS_CANCELLED);
-                myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+                //myRef.child("users").child(userId).child(trip.getFireBaseTripId()).setValue(trip);
+                FirebaseHelper.getInstance().updateTrip(trip, userId);
                 finish();
             }
         });
@@ -179,13 +181,11 @@ public class TripReminderActivity extends AppCompatActivity {
             }
         });
 
-        if (isFirstTime) {
-            if (mMediaPlayer == null) {
-                turnOnScreen(this);
-                playSound(this, getAlarmUri());
-            }
-            isFirstTime = false;
+        if (mMediaPlayer == null) {
+            turnOnScreen(this);
+            playSound(this, getAlarmUri());
         }
+
     }
 
 
