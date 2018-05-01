@@ -37,7 +37,7 @@ A simple android application that helps you to schedule and monitor your trips.
 ![alt tag](https://github.com/mokhtar92/TripPlanner/blob/master/screenshots/trip_notes.png)
 
 
-### 7) And the status of the trip changes based user action (Upcoming/ Done/ Cancelled).
+### 7) And the status of the trip changes based on user action (Upcoming/ Done/ Cancelled).
 ![alt tag](https://github.com/mokhtar92/TripPlanner/blob/master/screenshots/trip_status.png)
 
 
